@@ -26,6 +26,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
+    "build:gh-pages": "tsc --noEmit && VITE_BASE=/neon-serpent/ vite build",
+    "build:vercel": "tsc --noEmit && VITE_BASE=/ vite build",
     "preview": "vite preview --port 8765",
     "test": "node --test tests/unit/*.test.js tests/unit/extra/*.test.js tests/integration/*.test.js tests/dom/*.test.js tests/three/*.test.js tests/smoke/*.test.js",
     "test:vitest": "vitest run",

@@ -36,9 +36,7 @@ jobs:
         run: npm test
 
       - name: Build for Vercel
-        run: VITE_BASE=/ npm run build
-        env:
-          VITE_BASE: /
+        run: npm run build:vercel
 
       - name: Install Vercel CLI
         run: npm install -g vercel@latest
