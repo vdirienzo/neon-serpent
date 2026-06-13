@@ -15,13 +15,13 @@ function setNavigator(value) {
   Object.defineProperty(globalThis, 'navigator', {
     value,
     configurable: true,
-    writable: true
+    writable: true,
   });
   return () => {
     Object.defineProperty(globalThis, 'navigator', {
       value: orig,
       configurable: true,
-      writable: true
+      writable: true,
     });
   };
 }

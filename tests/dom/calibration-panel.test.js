@@ -3,7 +3,12 @@ import { test, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { installDOM, clearDOM, registerElement, mockElement } from './setup.js';
 import {
-  get as getCalib, set as setCalib, reset as resetCalib, onChange, flushSave, DEFAULTS
+  get as getCalib,
+  set as setCalib,
+  reset as resetCalib,
+  onChange,
+  flushSave,
+  DEFAULTS,
 } from '../../src/ui/CalibrationStore.js';
 
 installDOM();
@@ -49,7 +54,9 @@ test('init() creates one slider per non-RGB control', () => {
 test('init() lays out all 6 sections with their titles', () => {
   const sections = refs.calibPanel.querySelectorAll('.calib-section');
   assert.equal(sections.length, 6);
-  const titles = [...refs.calibPanel.querySelectorAll('.calib-section h3')].map((h) => h.textContent);
+  const titles = [...refs.calibPanel.querySelectorAll('.calib-section h3')].map(
+    (h) => h.textContent
+  );
   assert.ok(titles.includes('ILUMINACIÓN 3D'));
   assert.ok(titles.includes('TONE MAPPING'));
   assert.ok(titles.includes('NIEBLA'));
@@ -59,15 +66,21 @@ test('init() lays out all 6 sections with their titles', () => {
 });
 
 test('init() sets initial slider values from the calibration store', () => {
-  const ambient = refs.calibPanel.querySelector('.calib-row[data-key="ambient"] input[type="range"]');
+  const ambient = refs.calibPanel.querySelector(
+    '.calib-row[data-key="ambient"] input[type="range"]'
+  );
   assert.ok(ambient);
   assert.equal(Number(ambient.value), DEFAULTS.ambient);
-  const exposure = refs.calibPanel.querySelector('.calib-row[data-key="exposure"] input[type="range"]');
+  const exposure = refs.calibPanel.querySelector(
+    '.calib-row[data-key="exposure"] input[type="range"]'
+  );
   assert.equal(Number(exposure.value), DEFAULTS.exposure);
 });
 
 test('Slider input event calls setCalib with the parsed value', () => {
-  const slider = refs.calibPanel.querySelector('.calib-row[data-key="ambient"] input[type="range"]');
+  const slider = refs.calibPanel.querySelector(
+    '.calib-row[data-key="ambient"] input[type="range"]'
+  );
   slider.value = '0.42';
   slider.dispatchEvent({ type: 'input', target: slider, currentTarget: slider });
   assert.equal(getCalib('ambient'), 0.42);
@@ -80,9 +93,12 @@ test('RGB slider events call setCalib for each channel', () => {
   const r = row.querySelector('[data-channel="r"]');
   const g = row.querySelector('[data-channel="g"]');
   const b = row.querySelector('[data-channel="b"]');
-  r.value = '40'; r.dispatchEvent({ type: 'input', target: r });
-  g.value = '50'; g.dispatchEvent({ type: 'input', target: g });
-  b.value = '60'; b.dispatchEvent({ type: 'input', target: b });
+  r.value = '40';
+  r.dispatchEvent({ type: 'input', target: r });
+  g.value = '50';
+  g.dispatchEvent({ type: 'input', target: g });
+  b.value = '60';
+  b.dispatchEvent({ type: 'input', target: b });
   assert.equal(getCalib('fogR'), 40);
   assert.equal(getCalib('fogG'), 50);
   assert.equal(getCalib('fogB'), 60);
@@ -141,7 +157,7 @@ test('show()/hide() update aria-expanded on the toggle button', () => {
 
 test('Reset button calls resetCalib()', () => {
   // First, move some values away from defaults.
-  setCalib('ambient', 0.10);
+  setCalib('ambient', 0.1);
   setCalib('exposure', 1.95);
   assert.notEqual(getCalib('ambient'), DEFAULTS.ambient);
   // Click the reset button.
@@ -161,32 +177,64 @@ test('Pressing the L key toggles the panel open', () => {
 test('Pressing ESC closes the panel when open', () => {
   CP.show();
   assert.ok(refs.calibPanel.classList.contains('show'));
-  document.dispatchEvent({ type: 'keydown', key: 'Escape', target: document.body, preventDefault() {} });
+  document.dispatchEvent({
+    type: 'keydown',
+    key: 'Escape',
+    target: document.body,
+    preventDefault() {},
+  });
   assert.ok(!refs.calibPanel.classList.contains('show'));
 });
 
 test('ESC does nothing when the panel is already closed', () => {
   CP.hide();
   let prevented = false;
-  document.dispatchEvent({ type: 'keydown', key: 'Escape', target: document.body, preventDefault() { prevented = true; } });
+  document.dispatchEvent({
+    type: 'keydown',
+    key: 'Escape',
+    target: document.body,
+    preventDefault() {
+      prevented = true;
+    },
+  });
   assert.equal(prevented, false);
 });
 
 test('Pressing L inside a range input blurs the input', () => {
   CP.hide();
-  const slider = refs.calibPanel.querySelector('.calib-row[data-key="ambient"] input[type="range"]');
+  const slider = refs.calibPanel.querySelector(
+    '.calib-row[data-key="ambient"] input[type="range"]'
+  );
   assert.ok(slider, 'ambient slider should be findable');
   let blurred = false;
-  slider.blur = () => { blurred = true; };
-  document.dispatchEvent({ type: 'keydown', key: 'l', target: slider, currentTarget: slider, preventDefault() {} });
+  slider.blur = () => {
+    blurred = true;
+  };
+  document.dispatchEvent({
+    type: 'keydown',
+    key: 'l',
+    target: slider,
+    currentTarget: slider,
+    preventDefault() {},
+  });
   assert.equal(blurred, true, 'slider should be blurred when L is pressed inside it');
 });
 
 test('Pressing a non-L key inside a range input is a no-op (early return)', () => {
   CP.hide();
-  const slider = refs.calibPanel.querySelector('.calib-row[data-key="ambient"] input[type="range"]');
+  const slider = refs.calibPanel.querySelector(
+    '.calib-row[data-key="ambient"] input[type="range"]'
+  );
   let prevented = false;
-  document.dispatchEvent({ type: 'keydown', key: 'a', target: slider, currentTarget: slider, preventDefault() { prevented = true; } });
+  document.dispatchEvent({
+    type: 'keydown',
+    key: 'a',
+    target: slider,
+    currentTarget: slider,
+    preventDefault() {
+      prevented = true;
+    },
+  });
   assert.equal(prevented, false);
   assert.ok(!refs.calibPanel.classList.contains('show'));
 });

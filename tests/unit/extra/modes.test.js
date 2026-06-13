@@ -2,11 +2,17 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  getMode, setMode,
-  startStory, startTimeAttack, startDaily,
-  getTimeRemainingSec, checkTimeUp,
-  getDailySeed, setDailySeed,
-  getTimeAttackStart, setTimeAttackStart
+  getMode,
+  setMode,
+  startStory,
+  startTimeAttack,
+  startDaily,
+  getTimeRemainingSec,
+  checkTimeUp,
+  getDailySeed,
+  setDailySeed,
+  getTimeAttackStart,
+  setTimeAttackStart,
 } from '../../../src/game/Modes.js';
 import { MODE, EVT } from '../../../src/config.js';
 import { on, clear as clearBus } from '../../../src/core/EventBus.js';
@@ -84,9 +90,13 @@ test('checkTimeUp is a no-op in non-TIME mode (no event, no callback)', () => {
   reset();
   startStory();
   let gameOver = 0;
-  const off = on(EVT.GAME_OVER, () => { gameOver++; });
+  const off = on(EVT.GAME_OVER, () => {
+    gameOver++;
+  });
   let onUpCalls = 0;
-  checkTimeUp(() => { onUpCalls++; });
+  checkTimeUp(() => {
+    onUpCalls++;
+  });
   assert.equal(gameOver, 0);
   assert.equal(onUpCalls, 0);
   off();
@@ -96,9 +106,13 @@ test('checkTimeUp is a no-op when time has not elapsed', () => {
   reset();
   startTimeAttack();
   let gameOver = 0;
-  const off = on(EVT.GAME_OVER, () => { gameOver++; });
+  const off = on(EVT.GAME_OVER, () => {
+    gameOver++;
+  });
   let onUpCalls = 0;
-  checkTimeUp(() => { onUpCalls++; });
+  checkTimeUp(() => {
+    onUpCalls++;
+  });
   assert.equal(gameOver, 0);
   assert.equal(onUpCalls, 0);
   off();
@@ -111,9 +125,13 @@ test('checkTimeUp emits GAME_OVER with mode=TIME and calls onUp when time has el
   // start to simulate "more than 60s ago".
   setTimeAttackStart(-1e9);
   let payload = null;
-  const off = on(EVT.GAME_OVER, (p) => { payload = p; });
+  const off = on(EVT.GAME_OVER, (p) => {
+    payload = p;
+  });
   let onUpCalls = 0;
-  checkTimeUp(() => { onUpCalls++; });
+  checkTimeUp(() => {
+    onUpCalls++;
+  });
   assert.equal(onUpCalls, 1);
   assert.ok(payload, 'GAME_OVER event should have fired');
   assert.equal(payload.mode, MODE.TIME);
@@ -125,7 +143,9 @@ test('checkTimeUp can be invoked without an onUp callback', () => {
   startTimeAttack();
   setTimeAttackStart(-1e9);
   let gameOver = 0;
-  const off = on(EVT.GAME_OVER, () => { gameOver++; });
+  const off = on(EVT.GAME_OVER, () => {
+    gameOver++;
+  });
   assert.doesNotThrow(() => checkTimeUp());
   assert.equal(gameOver, 1);
   off();

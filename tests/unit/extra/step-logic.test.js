@@ -18,13 +18,13 @@ import { register } from 'node:module';
 Object.defineProperty(globalThis, 'navigator', {
   value: { maxTouchPoints: 0 },
   writable: true,
-  configurable: true
+  configurable: true,
 });
 if (typeof globalThis.window === 'undefined') {
   Object.defineProperty(globalThis, 'window', {
     value: { matchMedia: () => ({ matches: false }) },
     writable: true,
-    configurable: true
+    configurable: true,
   });
 }
 
@@ -50,7 +50,7 @@ function newCtx(overrides = {}) {
       this.applyMoveCalls.push({ newHead, willGrow, growExtra });
       this.cells.unshift(newHead);
       if (!willGrow && growExtra === 0) this.cells.pop();
-    }
+    },
   };
   return {
     snake,
@@ -67,27 +67,33 @@ function newCtx(overrides = {}) {
     slowMoUntil: 0,
     spawnBonus: () => {},
     pickFreeCell: () => ({ gx: 10, gz: 10 }),
-    ...overrides
+    ...overrides,
   };
 }
 
 before(() => {
   Object.defineProperty(globalThis, 'navigator', {
-    value: { maxTouchPoints: 0 }, writable: true, configurable: true
+    value: { maxTouchPoints: 0 },
+    writable: true,
+    configurable: true,
   });
   Object.defineProperty(globalThis, 'window', {
     value: { matchMedia: () => ({ matches: false }) },
-    writable: true, configurable: true
+    writable: true,
+    configurable: true,
   });
 });
 
 beforeEach(() => {
   Object.defineProperty(globalThis, 'navigator', {
-    value: { maxTouchPoints: 0 }, writable: true, configurable: true
+    value: { maxTouchPoints: 0 },
+    writable: true,
+    configurable: true,
   });
   Object.defineProperty(globalThis, 'window', {
     value: { matchMedia: () => ({ matches: false }) },
-    writable: true, configurable: true
+    writable: true,
+    configurable: true,
   });
 });
 
@@ -116,8 +122,10 @@ test('ate food: score increases by 10 * level, foodEaten++, food.spawn called', 
     food: {
       isAt: (x, z) => x === 6 && z === 5,
       spawn: (cell) => spawnCalls.push(cell),
-      gx: 6, gz: 5, mesh: {}
-    }
+      gx: 6,
+      gz: 5,
+      mesh: {},
+    },
   });
   const sl = new StepLogic(ctx);
 
@@ -135,12 +143,14 @@ test('eating food every BONUS_EVERY (4) calls spawnBonus', () => {
     level: 1,
     score: 0,
     foodEaten: 3, // next bite makes it 4 -> BONUS_EVERY
-    spawnBonus: () => spawnBonusCalls.push(1)
+    spawnBonus: () => spawnBonusCalls.push(1),
   });
   ctx.food = {
     isAt: (x, z) => x === 6 && z === 5,
     spawn: () => {},
-    gx: 6, gz: 5, mesh: {}
+    gx: 6,
+    gz: 5,
+    mesh: {},
   };
   const sl = new StepLogic(ctx);
   sl.step();
@@ -157,9 +167,13 @@ test('ate bonus: score increases by 50 * level, bonus disposed, c.bonus = null',
     food: { isAt: () => false, spawn: () => {}, gx: -1, gz: -1, mesh: null },
     bonus: {
       isAt: (x, z) => x === 6 && z === 5,
-      dispose: () => { disposed = true; },
-      gx: 6, gz: 5, mesh: {}
-    }
+      dispose: () => {
+        disposed = true;
+      },
+      gx: 6,
+      gz: 5,
+      mesh: {},
+    },
   });
   const sl = new StepLogic(ctx);
   const r = sl.step();
@@ -228,7 +242,7 @@ test('pickup collection increases score and sets willGrow', async () => {
         return { type: 'orb' };
       }
       return null;
-    }
+    },
   };
   const sl = new StepLogic(ctx);
   const r = sl.step();

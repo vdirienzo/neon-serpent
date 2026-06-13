@@ -21,13 +21,20 @@ globalThis.addEventListener = function (type, fn) {
 globalThis.removeEventListener = function (type, fn) {
   _installLog.push(['remove', type, fn]);
   if (!_listeners.has(type)) return;
-  _listeners.set(type, _listeners.get(type).filter((f) => f !== fn));
+  _listeners.set(
+    type,
+    _listeners.get(type).filter((f) => f !== fn)
+  );
 };
 
 function dispatch(type, event) {
   const list = _listeners.get(type) || [];
   for (const fn of list.slice()) {
-    try { fn(event); } catch (e) { /* swallow */ }
+    try {
+      fn(event);
+    } catch (e) {
+      /* swallow */
+    }
   }
 }
 
@@ -68,13 +75,20 @@ test('safeCall returns the function result on success', () => {
 });
 
 test('safeCall returns the static fallback on error', () => {
-  const v = Errors.safeCall(() => { throw new Error('boom'); }, 'fallback');
+  const v = Errors.safeCall(() => {
+    throw new Error('boom');
+  }, 'fallback');
   assert.equal(v, 'fallback');
 });
 
 test('safeCall invokes the function fallback with the caught error', () => {
   const sentinel = new RangeError('x');
-  const v = Errors.safeCall(() => { throw sentinel; }, (e) => 'got:' + e.message);
+  const v = Errors.safeCall(
+    () => {
+      throw sentinel;
+    },
+    (e) => 'got:' + e.message
+  );
   assert.equal(v, 'got:x');
   assert.ok(v.startsWith('got:'));
 });
@@ -82,7 +96,9 @@ test('safeCall invokes the function fallback with the caught error', () => {
 test('safeCall reports the error to the configured reporter', () => {
   const reports = [];
   Errors.setReporter((rec) => reports.push(rec));
-  Errors.safeCall(() => { throw new Error('reported'); });
+  Errors.safeCall(() => {
+    throw new Error('reported');
+  });
   Errors.setReporter(null);
   assert.equal(reports.length, 1);
   assert.equal(reports[0].kind, 'safeCall');
@@ -93,7 +109,9 @@ test('safeCall reports the error to the configured reporter', () => {
 test('safeCall triggers the toast handler on error', () => {
   const toasts = [];
   Errors.setToastHandler((msg, kind) => toasts.push([msg, kind]));
-  Errors.safeCall(() => { throw new Error('shown'); });
+  Errors.safeCall(() => {
+    throw new Error('shown');
+  });
   Errors.setToastHandler(null);
   assert.equal(toasts.length, 1);
   assert.match(toasts[0][0], /shown/);
@@ -101,10 +119,23 @@ test('safeCall triggers the toast handler on error', () => {
 });
 
 test('safeCall tolerates a throwing reporter and a throwing toast handler', () => {
-  Errors.setReporter(() => { throw new Error('r'); });
-  Errors.setToastHandler(() => { throw new Error('t'); });
-  assert.doesNotThrow(() => Errors.safeCall(() => { throw new Error('orig'); }, 'fb'));
-  assert.equal(Errors.safeCall(() => { throw new Error('orig'); }, 'fb'), 'fb');
+  Errors.setReporter(() => {
+    throw new Error('r');
+  });
+  Errors.setToastHandler(() => {
+    throw new Error('t');
+  });
+  assert.doesNotThrow(() =>
+    Errors.safeCall(() => {
+      throw new Error('orig');
+    }, 'fb')
+  );
+  assert.equal(
+    Errors.safeCall(() => {
+      throw new Error('orig');
+    }, 'fb'),
+    'fb'
+  );
   Errors.setReporter(null);
   Errors.setToastHandler(null);
 });
@@ -131,14 +162,18 @@ test('safeCallAsync resolves with the function result on success', async () => {
 });
 
 test('safeCallAsync catches a rejected promise and returns the fallback', async () => {
-  const v = await Errors.safeCallAsync(async () => { throw new Error('async-boom'); }, 'fb');
+  const v = await Errors.safeCallAsync(async () => {
+    throw new Error('async-boom');
+  }, 'fb');
   assert.equal(v, 'fb');
 });
 
 test('safeCallAsync reports the rejection to the reporter', async () => {
   const reports = [];
   Errors.setReporter((rec) => reports.push(rec));
-  await Errors.safeCallAsync(async () => { throw new Error('a'); });
+  await Errors.safeCallAsync(async () => {
+    throw new Error('a');
+  });
   Errors.setReporter(null);
   assert.ok(reports.length >= 1);
   assert.equal(reports[0].kind, 'safeCallAsync');
@@ -155,7 +190,7 @@ test('error event handler records source, line, and column from the event', () =
     error: new Error('boot fail'),
     filename: 'https://example.com/app.js',
     lineno: 17,
-    colno: 4
+    colno: 4,
   });
   Errors.setReporter(null);
   assert.equal(reports.length, 1);
@@ -198,7 +233,9 @@ test('setReporter accepts only functions (or null)', () => {
   // Should not throw; safeCall should still work and not call a non-function.
   const reports = [];
   Errors.setReporter((rec) => reports.push(rec));
-  Errors.safeCall(() => { throw new Error('x'); });
+  Errors.safeCall(() => {
+    throw new Error('x');
+  });
   assert.equal(reports.length, 1);
   Errors.setReporter(null);
 });
@@ -207,7 +244,9 @@ test('setToastHandler accepts only functions (or null)', () => {
   Errors.setToastHandler(42);
   const toasts = [];
   Errors.setToastHandler((msg, kind) => toasts.push([msg, kind]));
-  Errors.safeCall(() => { throw new Error('y'); });
+  Errors.safeCall(() => {
+    throw new Error('y');
+  });
   assert.equal(toasts.length, 1);
   Errors.setToastHandler(null);
 });

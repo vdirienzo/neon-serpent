@@ -182,7 +182,14 @@ test('Pressing J does nothing in unsupported states (e.g. LOADING)', () => {
   LSM.hide();
   setState(STATE.LOADING);
   let prevented = false;
-  document.dispatchEvent({ type: 'keydown', key: 'j', target: document.body, preventDefault() { prevented = true; } });
+  document.dispatchEvent({
+    type: 'keydown',
+    key: 'j',
+    target: document.body,
+    preventDefault() {
+      prevented = true;
+    },
+  });
   assert.equal(prevented, false);
   assert.ok(!refs.modalEl.classList.contains('show'));
 });
@@ -190,7 +197,12 @@ test('Pressing J does nothing in unsupported states (e.g. LOADING)', () => {
 test('Pressing ESC closes the modal when it is open', () => {
   LSM.show();
   assert.ok(refs.modalEl.classList.contains('show'));
-  document.dispatchEvent({ type: 'keydown', key: 'Escape', target: document.body, preventDefault() {} });
+  document.dispatchEvent({
+    type: 'keydown',
+    key: 'Escape',
+    target: document.body,
+    preventDefault() {},
+  });
   assert.ok(!refs.modalEl.classList.contains('show'));
 });
 

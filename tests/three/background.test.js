@@ -112,7 +112,7 @@ test('updateBackground(bg, t) rotates nebGroup and dust', () => {
   assert.equal(bg.nebGroup.rotation.y, 0.01);
   // t=2 doubles the angle.
   Background.updateBackground(bg, 2);
-  assert.equal(bg.dust.rotation.y, 0.10);
+  assert.equal(bg.dust.rotation.y, 0.1);
   assert.equal(bg.nebGroup.rotation.y, 0.02);
 });
 

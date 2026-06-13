@@ -19,7 +19,12 @@ function cfgFor(n) {
   const m = new HeightMap();
   const cfg = buildLevel(m, n);
   const goal = findGoal(m);
-  return { startGX: cfg.startGX, startGZ: cfg.startGZ, goalGX: goal && goal.gx, goalGZ: goal && goal.gz };
+  return {
+    startGX: cfg.startGX,
+    startGZ: cfg.startGZ,
+    goalGX: goal && goal.gx,
+    goalGZ: goal && goal.gz,
+  };
 }
 
 test('buildLevel(map, 11) and buildLevel(map, 1) return identical target layouts', () => {

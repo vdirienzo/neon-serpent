@@ -20,8 +20,12 @@ test('setState with the same value is a no-op (no event, no listener call)', () 
   setState(STATE.TITLE);
   let stateEvents = 0;
   let listenerCalls = 0;
-  const offEvt = on(EVT.STATE_CHANGE, () => { stateEvents++; });
-  const offListener = onStateChange(() => { listenerCalls++; });
+  const offEvt = on(EVT.STATE_CHANGE, () => {
+    stateEvents++;
+  });
+  const offListener = onStateChange(() => {
+    listenerCalls++;
+  });
 
   setState(STATE.TITLE);
   assert.equal(stateEvents, 0, 'no STATE_CHANGE event for identical value');
@@ -47,7 +51,10 @@ test('onStateChange listener is called with the new state, and unsubscribe stops
   setState(STATE.TITLE);
   let lastSeen = null;
   let calls = 0;
-  const off = onStateChange((s) => { lastSeen = s; calls++; });
+  const off = onStateChange((s) => {
+    lastSeen = s;
+    calls++;
+  });
 
   setState(STATE.PLAYING);
   assert.equal(lastSeen, STATE.PLAYING);
@@ -64,10 +71,16 @@ test('onStateChange listener is called with the new state, and unsubscribe stops
 
 test('multiple onStateChange listeners all receive the new state', () => {
   setState(STATE.TITLE);
-  let a = 0, b = 0;
-  const offA = onStateChange(() => { a++; });
-  const offB = onStateChange(() => { b++; });
-  const baseA = a, baseB = b;
+  let a = 0,
+    b = 0;
+  const offA = onStateChange(() => {
+    a++;
+  });
+  const offB = onStateChange(() => {
+    b++;
+  });
+  const baseA = a,
+    baseB = b;
 
   setState(STATE.PLAYING);
   assert.equal(a, baseA + 1);

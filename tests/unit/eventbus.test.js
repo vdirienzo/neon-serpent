@@ -34,7 +34,9 @@ test('emit with no handlers is no-op', () => {
 test('handler error does not stop other handlers', () => {
   clear();
   const seen = [];
-  on('test', () => { throw new Error('boom'); });
+  on('test', () => {
+    throw new Error('boom');
+  });
   on('test', (p) => seen.push(p));
   emit('test', 'ok');
   assert.equal(seen.length, 1);

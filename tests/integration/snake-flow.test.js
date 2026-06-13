@@ -23,7 +23,7 @@ function makeContext({ map, snake, food }) {
     speedBoostUntil: 0,
     slowMoUntil: 0,
     pickFreeCell: () => null,
-    spawnBonus: () => {}
+    spawnBonus: () => {},
   };
 }
 
@@ -78,10 +78,14 @@ test('full eat-food flow: step returns newHead, context score/interval/foodEaten
   }
 
   // After eating, all the side-effects should have happened.
-  assert.equal(ctx.score, 10,         'score should be 10 (10 * level 1)');
-  assert.equal(ctx.foodEaten, 1,      'foodEaten should be 1');
-  assert.equal(ctx.stepInterval, STEP_INIT - STEP_DEC, 'stepInterval should have decreased by STEP_DEC');
-  assert.equal(s.length(), 5,         'snake should have grown from 4 to 5 cells');
+  assert.equal(ctx.score, 10, 'score should be 10 (10 * level 1)');
+  assert.equal(ctx.foodEaten, 1, 'foodEaten should be 1');
+  assert.equal(
+    ctx.stepInterval,
+    STEP_INIT - STEP_DEC,
+    'stepInterval should have decreased by STEP_DEC'
+  );
+  assert.equal(s.length(), 5, 'snake should have grown from 4 to 5 cells');
   assert.deepEqual(s.head(), result.newHead, 'snake head should match newHead');
 });
 
@@ -110,7 +114,11 @@ test('repeated eats keep decreasing stepInterval until STEP_MIN', () => {
 
   assert.equal(ctx.foodEaten, steps, 'foodEaten should match number of steps');
   assert.ok(ctx.stepInterval >= STEP_MIN, 'stepInterval should never drop below STEP_MIN');
-  assert.equal(ctx.stepInterval, STEP_MIN, 'after many eats, stepInterval should be exactly STEP_MIN');
+  assert.equal(
+    ctx.stepInterval,
+    STEP_MIN,
+    'after many eats, stepInterval should be exactly STEP_MIN'
+  );
 });
 
 test('snake stepping into a void cell reports status=died cause=void (not real food, but real HeightMap)', () => {

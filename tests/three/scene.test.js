@@ -39,7 +39,7 @@ test('scene.fog is a FogExp2 with the expected color and density', () => {
   const scene = createScene();
   assert.ok(scene.fog, 'fog should be set');
   assert.ok(scene.fog instanceof FogExp2);
-  assert.equal(scene.fog.density, 0.010);
+  assert.equal(scene.fog.density, 0.01);
   // Color of fog is 0x04060e (matches background).
   assert.equal(scene.fog.color.getHex(), 0x04060e);
 });

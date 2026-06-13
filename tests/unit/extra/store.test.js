@@ -13,11 +13,21 @@ import assert from 'node:assert/strict';
 // In-memory localStorage shim with the full surface Store.js needs.
 const _store = new Map();
 global.localStorage = {
-  getItem(k) { return _store.has(k) ? _store.get(k) : null; },
-  setItem(k, v) { _store.set(k, String(v)); },
-  removeItem(k) { _store.delete(k); },
-  clear() { _store.clear(); },
-  get length() { return _store.size; },
+  getItem(k) {
+    return _store.has(k) ? _store.get(k) : null;
+  },
+  setItem(k, v) {
+    _store.set(k, String(v));
+  },
+  removeItem(k) {
+    _store.delete(k);
+  },
+  clear() {
+    _store.clear();
+  },
+  get length() {
+    return _store.size;
+  },
   key(i) {
     let n = 0;
     for (const k of _store.keys()) {
@@ -25,11 +35,10 @@ global.localStorage = {
       n++;
     }
     return null;
-  }
+  },
 };
 
-const { isPersistent, get, set, remove, clearAll } =
-  await import('../../../src/core/Store.js');
+const { isPersistent, get, set, remove, clearAll } = await import('../../../src/core/Store.js');
 
 test('isPersistent is true when localStorage is available', () => {
   assert.equal(isPersistent, true);

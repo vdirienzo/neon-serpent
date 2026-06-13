@@ -12,8 +12,7 @@ import { register } from 'node:module';
 
 register('./_three-loader.mjs', import.meta.url);
 
-const { cinematicPose, topDownPose, chasePose } =
-  await import('../../../src/camera/CameraMath.js');
+const { cinematicPose, topDownPose, chasePose } = await import('../../../src/camera/CameraMath.js');
 
 // Import the mock Vector3 directly so we can construct real input objects
 // for chasePose (which calls headWorld.clone() etc).
@@ -53,7 +52,10 @@ test('cinematicPose at t=PI/0.08 puts camera on -Z orbit (half period)', () => {
   assert.equal(r.pos.z, -33.6);
   // y wobble: just sanity-check it's within +/- camH and not NaN
   assert.ok(Number.isFinite(r.pos.y), `pos.y should be finite, got ${r.pos.y}`);
-  assert.ok(Math.abs(r.pos.y - 28.8) <= 0.6 + 1e-9, `pos.y should be within wobble, got ${r.pos.y}`);
+  assert.ok(
+    Math.abs(r.pos.y - 28.8) <= 0.6 + 1e-9,
+    `pos.y should be within wobble, got ${r.pos.y}`
+  );
 });
 
 test('cinematicPose scales with gridSize and respects yFocus', () => {

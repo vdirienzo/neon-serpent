@@ -45,7 +45,14 @@ test('CSS files exist and main.css imports all partials', () => {
     assert.match(mainCss, new RegExp(partial));
   }
   // All referenced files exist
-  for (const partial of ['tokens.css', 'reset.css', 'base.css', 'layout/loader.css', 'layout/hud.css', 'fx/crt.css']) {
+  for (const partial of [
+    'tokens.css',
+    'reset.css',
+    'base.css',
+    'layout/loader.css',
+    'layout/hud.css',
+    'fx/crt.css',
+  ]) {
     const p = path.join(SRC, 'styles', partial);
     assert.ok(fs.existsSync(p), `missing CSS: ${p}`);
   }
@@ -86,13 +93,14 @@ function collectAllJs(dir) {
 function extractImports(file) {
   const code = fs.readFileSync(file, 'utf8');
   const matches = [...code.matchAll(/import\s+(?:[^'"]+\s+from\s+)?['"]([^'"]+)['"]/g)];
-  return matches.map(m => m[1]);
+  return matches.map((m) => m[1]);
 }
 
 function resolveImport(fromFile, spec) {
   const dir = path.dirname(fromFile);
   let p = path.resolve(dir, spec);
   if (!p.endsWith('.js') && fs.existsSync(p + '.js')) p = p + '.js';
-  else if (!p.endsWith('.js') && fs.existsSync(path.join(p, 'index.js'))) p = path.join(p, 'index.js');
+  else if (!p.endsWith('.js') && fs.existsSync(path.join(p, 'index.js')))
+    p = path.join(p, 'index.js');
   return p;
 }

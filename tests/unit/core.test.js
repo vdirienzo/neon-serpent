@@ -6,14 +6,34 @@ import assert from 'node:assert/strict';
 // Mock DOM/localStorage for node environment
 globalThis.localStorage = {
   _: {},
-  setItem(k, v) { this._[k] = v; },
-  getItem(k) { return this._[k] || null; },
-  removeItem(k) { delete this._[k]; },
-  key(i) { return Object.keys(this._)[i] || null; },
-  get length() { return Object.keys(this._).length; }
+  setItem(k, v) {
+    this._[k] = v;
+  },
+  getItem(k) {
+    return this._[k] || null;
+  },
+  removeItem(k) {
+    delete this._[k];
+  },
+  key(i) {
+    return Object.keys(this._)[i] || null;
+  },
+  get length() {
+    return Object.keys(this._).length;
+  },
 };
 
-import { clamp, lerp, damp, choice, rand, randi, smoothstepN, g2w, angleDelta } from '../../src/core/Math.js';
+import {
+  clamp,
+  lerp,
+  damp,
+  choice,
+  rand,
+  randi,
+  smoothstepN,
+  g2w,
+  angleDelta,
+} from '../../src/core/Math.js';
 
 test('clamp constrains to range', () => {
   assert.equal(clamp(5, 0, 10), 5);

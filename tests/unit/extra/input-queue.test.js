@@ -13,7 +13,9 @@ function makeSnake() {
   const calls = [];
   return {
     calls,
-    setDir(dir) { calls.push(dir); }
+    setDir(dir) {
+      calls.push(dir);
+    },
   };
 }
 
@@ -22,7 +24,7 @@ function makeCamera(pos, lookTarget) {
   // camera.userData._lookTarget, so a plain object is sufficient.
   return {
     position: pos,
-    userData: lookTarget !== undefined ? { _lookTarget: lookTarget } : {}
+    userData: lookTarget !== undefined ? { _lookTarget: lookTarget } : {},
   };
 }
 
@@ -40,7 +42,7 @@ function makeInput() {
       const set = handlers.get(event);
       if (!set) return;
       for (const fn of set) fn(payload);
-    }
+    },
   };
 }
 
@@ -84,7 +86,9 @@ test('arrow key in "countdown" and "dying" states is forwarded to snake', () => 
 test('arrow key in "paused" state emits syskey and does not call setDir', () => {
   const { q, snake, keyboard } = makeQueue();
   let syskeyEvent = null;
-  q.on('syskey', (e) => { syskeyEvent = e; });
+  q.on('syskey', (e) => {
+    syskeyEvent = e;
+  });
   q.attach(() => 'paused');
   const ev = { code: 'ArrowUp', preventDefault() {} };
   keyboard.trigger('key', ev);
@@ -97,7 +101,9 @@ test('arrow key in "over", "title", "loading" states emits syskey', () => {
   for (const state of ['over', 'title', 'loading']) {
     const { q, snake, keyboard } = makeQueue();
     let syskeyCount = 0;
-    q.on('syskey', () => { syskeyCount++; });
+    q.on('syskey', () => {
+      syskeyCount++;
+    });
     q.attach(() => state);
     keyboard.trigger('key', { code: 'ArrowDown', preventDefault() {} });
     assert.equal(snake.calls.length, 0, `state=${state} should not setDir`);
@@ -108,7 +114,9 @@ test('arrow key in "over", "title", "loading" states emits syskey', () => {
 test('non-direction key (e.g. Space) in "playing" state emits syskey, not setDir', () => {
   const { q, snake, keyboard } = makeQueue();
   let syskeyEvent = null;
-  q.on('syskey', (e) => { syskeyEvent = e; });
+  q.on('syskey', (e) => {
+    syskeyEvent = e;
+  });
   q.attach(() => 'playing');
   const ev = { code: 'Space', preventDefault() {} };
   keyboard.trigger('key', ev);
@@ -123,7 +131,9 @@ test('arrow key in "playing" state calls preventDefault on the event', () => {
   let prevented = false;
   keyboard.trigger('key', {
     code: 'ArrowUp',
-    preventDefault() { prevented = true; }
+    preventDefault() {
+      prevented = true;
+    },
   });
   assert.ok(prevented, 'preventDefault should have been called for direction keys');
 });
@@ -196,7 +206,9 @@ test('getState is re-evaluated on every event (state can change between events)'
   assert.equal(snake.calls.length, 1, 'first event in playing should setDir');
   // Second event now sees 'paused' and must emit syskey instead
   let syskey = 0;
-  q.on('syskey', () => { syskey++; });
+  q.on('syskey', () => {
+    syskey++;
+  });
   keyboard.trigger('key', { code: 'ArrowUp', preventDefault() {} });
   assert.equal(snake.calls.length, 1, 'no new setDir call after pausing');
   assert.equal(syskey, 1, 'syskey should fire on the second event');

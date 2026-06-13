@@ -18,11 +18,11 @@ test('passes silently for truthy conditions', () => {
 
 test('throws for every falsy condition', () => {
   assert.throws(() => assertIt(false), /Assertion failed/);
-  assert.throws(() => assertIt(0),     /Assertion failed/);
-  assert.throws(() => assertIt(''),    /Assertion failed/);
-  assert.throws(() => assertIt(null),  /Assertion failed/);
+  assert.throws(() => assertIt(0), /Assertion failed/);
+  assert.throws(() => assertIt(''), /Assertion failed/);
+  assert.throws(() => assertIt(null), /Assertion failed/);
   assert.throws(() => assertIt(undefined), /Assertion failed/);
-  assert.throws(() => assertIt(NaN),   /Assertion failed/);
+  assert.throws(() => assertIt(NaN), /Assertion failed/);
 });
 
 test('thrown error includes the supplied message', () => {

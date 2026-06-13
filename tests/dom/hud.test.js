@@ -44,7 +44,19 @@ function setupHud() {
   registerElement('comboVal', comboVal);
   registerElement('comboBadge', comboBadge);
 
-  return { scoreVal, hiVal, lvlNum, lvlBar, sectorNum, sectorName, sectorWrap, modeIndicator, timeAttackRemaining, comboVal, comboBadge };
+  return {
+    scoreVal,
+    hiVal,
+    lvlNum,
+    lvlBar,
+    sectorNum,
+    sectorName,
+    sectorWrap,
+    modeIndicator,
+    timeAttackRemaining,
+    comboVal,
+    comboBadge,
+  };
 }
 
 let HUD;
@@ -155,7 +167,7 @@ test('updateCombo() hides the badge when combo is 0', () => {
   tickCombo();
   HUD.updateCombo();
   resetCombo();
-  refs.comboBadge.hidden = false;  // start visible so we can verify it hides
+  refs.comboBadge.hidden = false; // start visible so we can verify it hides
   HUD.updateCombo();
   assert.equal(refs.comboBadge.hidden, true);
   assert.equal(refs.comboBadge.classList.contains('hot'), false);

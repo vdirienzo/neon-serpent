@@ -40,7 +40,11 @@ test('isSolid is called with the exact gx and gz of the head', () => {
   let receivedX = null;
   let receivedY = null;
   const map = {
-    isSolid(x, y) { receivedX = x; receivedY = y; return true; }
+    isSolid(x, y) {
+      receivedX = x;
+      receivedY = y;
+      return true;
+    },
   };
   const result = checkCollisions({ gx: 7, gz: 11 }, map);
   assert.equal(receivedX, 7);

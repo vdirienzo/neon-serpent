@@ -3,7 +3,12 @@ import { test, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
-  getDyingFrom, getDyingT, startDying, updateDying, dyingComplete, resetDying
+  getDyingFrom,
+  getDyingT,
+  startDying,
+  updateDying,
+  dyingComplete,
+  resetDying,
 } from '../../../src/game/DeathHandler.js';
 import { getState, setState } from '../../../src/game/GameState.js';
 import { clear as clearBus, on } from '../../../src/core/EventBus.js';
@@ -32,7 +37,7 @@ test('startDying is a no-op when already dying (no double emit)', () => {
   on(EVT.DYING, (p) => seen.push(p));
 
   startDying('void', null);
-  startDying('self', null);  // should be ignored — already dying
+  startDying('self', null); // should be ignored — already dying
 
   assert.equal(seen.length, 1, 'second startDying should be a no-op');
   assert.equal(seen[0].cause, 'void', 'cause should remain from the first call');

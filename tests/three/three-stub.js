@@ -10,28 +10,67 @@ export class Vector3 {
     this.z = z;
     this.isVector3 = true;
   }
-  clone() { return new Vector3(this.x, this.y, this.z); }
-  set(x, y, z) { this.x = x; this.y = y; this.z = z; return this; }
-  copy(v) { this.x = v.x; this.y = v.y; this.z = v.z; return this; }
-  add(v) { this.x += v.x; this.y += v.y; this.z += v.z; return this; }
-  sub(v) { this.x -= v.x; this.y -= v.y; this.z -= v.z; return this; }
-  multiplyScalar(s) { this.x *= s; this.y *= s; this.z *= s; return this; }
-  normalize() {
-    const l = Math.hypot(this.x, this.y, this.z) || 1;
-    this.x /= l; this.y /= l; this.z /= l;
+  clone() {
+    return new Vector3(this.x, this.y, this.z);
+  }
+  set(x, y, z) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
     return this;
   }
-  lengthSq() { return this.x * this.x + this.y * this.y + this.z * this.z; }
-  distanceTo(v) { return Math.hypot(this.x - v.x, this.y - v.y, this.z - v.z); }
+  copy(v) {
+    this.x = v.x;
+    this.y = v.y;
+    this.z = v.z;
+    return this;
+  }
+  add(v) {
+    this.x += v.x;
+    this.y += v.y;
+    this.z += v.z;
+    return this;
+  }
+  sub(v) {
+    this.x -= v.x;
+    this.y -= v.y;
+    this.z -= v.z;
+    return this;
+  }
+  multiplyScalar(s) {
+    this.x *= s;
+    this.y *= s;
+    this.z *= s;
+    return this;
+  }
+  normalize() {
+    const l = Math.hypot(this.x, this.y, this.z) || 1;
+    this.x /= l;
+    this.y /= l;
+    this.z /= l;
+    return this;
+  }
+  lengthSq() {
+    return this.x * this.x + this.y * this.y + this.z * this.z;
+  }
+  distanceTo(v) {
+    return Math.hypot(this.x - v.x, this.y - v.y, this.z - v.z);
+  }
   lerp(v, t) {
     this.x += (v.x - this.x) * t;
     this.y += (v.y - this.y) * t;
     this.z += (v.z - this.z) * t;
     return this;
   }
-  applyQuaternion() { return this; }
-  project(camera) { return this; }
-  unproject() { return this; }
+  applyQuaternion() {
+    return this;
+  }
+  project(camera) {
+    return this;
+  }
+  unproject() {
+    return this;
+  }
 }
 
 export class Color {
@@ -39,11 +78,29 @@ export class Color {
     this.isColor = true;
     if (typeof v === 'number') this.setHex(v);
     else if (v && typeof v === 'object') this.copyFrom(v);
-    else { this.r = 0; this.g = 0; this.b = 0; }
+    else {
+      this.r = 0;
+      this.g = 0;
+      this.b = 0;
+    }
   }
-  clone() { const c = new Color(); c.copyFrom(this); return c; }
-  copyFrom(c) { this.r = c.r; this.g = c.g; this.b = c.b; return this; }
-  setRGB(r, g, b) { this.r = r; this.g = g; this.b = b; return this; }
+  clone() {
+    const c = new Color();
+    c.copyFrom(this);
+    return c;
+  }
+  copyFrom(c) {
+    this.r = c.r;
+    this.g = c.g;
+    this.b = c.b;
+    return this;
+  }
+  setRGB(r, g, b) {
+    this.r = r;
+    this.g = g;
+    this.b = b;
+    return this;
+  }
   setHex(h) {
     this.r = ((h >> 16) & 0xff) / 255;
     this.g = ((h >> 8) & 0xff) / 255;
@@ -51,21 +108,28 @@ export class Color {
     return this;
   }
   getHex() {
-    return ((this.r * 255) | 0) << 16 | ((this.g * 255) | 0) << 8 | ((this.b * 255) | 0);
+    return (((this.r * 255) | 0) << 16) | (((this.g * 255) | 0) << 8) | ((this.b * 255) | 0);
   }
   lerpColors(a, b, t) {
-    return this.setRGB(
-      a.r + (b.r - a.r) * t,
-      a.g + (b.g - a.g) * t,
-      a.b + (b.b - a.b) * t
-    );
+    return this.setRGB(a.r + (b.r - a.r) * t, a.g + (b.g - a.g) * t, a.b + (b.b - a.b) * t);
   }
-  multiplyScalar(s) { this.r *= s; this.g *= s; this.b *= s; return this; }
-  offsetHSL() { return this; }
+  multiplyScalar(s) {
+    this.r *= s;
+    this.g *= s;
+    this.b *= s;
+    return this;
+  }
+  offsetHSL() {
+    return this;
+  }
 }
 
 export class FogExp2 {
-  constructor(c, d) { this.color = new Color(c); this.density = d; this.isFog = true; }
+  constructor(c, d) {
+    this.color = new Color(c);
+    this.density = d;
+    this.isFog = true;
+  }
 }
 
 export class Scene {
@@ -75,13 +139,25 @@ export class Scene {
     this.fog = null;
     this.isScene = true;
   }
-  add(o) { this.children.push(o); o && (o.parent = this); return o; }
-  remove(o) {
-    const i = this.children.indexOf(o);
-    if (i >= 0) { this.children.splice(i, 1); if (o) o.parent = null; }
+  add(o) {
+    this.children.push(o);
+    o && (o.parent = this);
     return o;
   }
-  traverse(fn) { for (const c of this.children) { fn(c); if (c.children) c.traverse(fn); } }
+  remove(o) {
+    const i = this.children.indexOf(o);
+    if (i >= 0) {
+      this.children.splice(i, 1);
+      if (o) o.parent = null;
+    }
+    return o;
+  }
+  traverse(fn) {
+    for (const c of this.children) {
+      fn(c);
+      if (c.children) c.traverse(fn);
+    }
+  }
 }
 
 export class PerspectiveCamera {
@@ -137,13 +213,25 @@ export class Group {
     this.scale = new Vector3(1, 1, 1);
     this.userData = {};
   }
-  add(o) { this.children.push(o); o && (o.parent = this); return o; }
-  remove(o) {
-    const i = this.children.indexOf(o);
-    if (i >= 0) { this.children.splice(i, 1); if (o) o.parent = null; }
+  add(o) {
+    this.children.push(o);
+    o && (o.parent = this);
     return o;
   }
-  traverse(fn) { for (const c of this.children) { fn(c); if (c.children) c.children.forEach(cc => cc.traverse && cc.traverse(fn)); } }
+  remove(o) {
+    const i = this.children.indexOf(o);
+    if (i >= 0) {
+      this.children.splice(i, 1);
+      if (o) o.parent = null;
+    }
+    return o;
+  }
+  traverse(fn) {
+    for (const c of this.children) {
+      fn(c);
+      if (c.children) c.children.forEach((cc) => cc.traverse && cc.traverse(fn));
+    }
+  }
 }
 
 export class Mesh {
@@ -193,8 +281,13 @@ export class BufferGeometry {
     this.attributes[name] = attr;
     return this;
   }
-  getAttribute(name) { return this.attributes[name] || null; }
-  setIndex(idx) { this.index = idx; return this; }
+  getAttribute(name) {
+    return this.attributes[name] || null;
+  }
+  setIndex(idx) {
+    this.index = idx;
+    return this;
+  }
   dispose() {}
 }
 
@@ -317,9 +410,14 @@ export class DataTexture extends Texture {
 }
 
 export class Raycaster {
-  constructor() { this.params = {}; this.ray = { origin: new Vector3(), direction: new Vector3() }; }
+  constructor() {
+    this.params = {};
+    this.ray = { origin: new Vector3(), direction: new Vector3() };
+  }
   setFromCamera() {}
-  intersectObjects() { return []; }
+  intersectObjects() {
+    return [];
+  }
 }
 
 export const SRGBColorSpace = 'srgb';
@@ -336,12 +434,44 @@ export const NormalBlending = 4;
 export const SubtractiveBlending = 5;
 
 export default {
-  Vector3, Color, FogExp2, Scene, PerspectiveCamera, AmbientLight, PointLight,
-  DirectionalLight, Group, Mesh, Sprite, Points, BufferGeometry, BufferAttribute,
-  PlaneGeometry, BoxGeometry, SphereGeometry, CylinderGeometry, TorusGeometry,
-  PointsMaterial, SpriteMaterial, MeshStandardMaterial, MeshBasicMaterial,
-  MeshPhongMaterial, Texture, CanvasTexture, DataTexture, Raycaster,
-  SRGBColorSpace, LinearSRGBColorSpace, NoToneMapping, ACESFilmicToneMapping,
-  ReinhardToneMapping, CineonToneMapping, DoubleSide, FrontSide, BackSide,
-  AdditiveBlending, NormalBlending, SubtractiveBlending
+  Vector3,
+  Color,
+  FogExp2,
+  Scene,
+  PerspectiveCamera,
+  AmbientLight,
+  PointLight,
+  DirectionalLight,
+  Group,
+  Mesh,
+  Sprite,
+  Points,
+  BufferGeometry,
+  BufferAttribute,
+  PlaneGeometry,
+  BoxGeometry,
+  SphereGeometry,
+  CylinderGeometry,
+  TorusGeometry,
+  PointsMaterial,
+  SpriteMaterial,
+  MeshStandardMaterial,
+  MeshBasicMaterial,
+  MeshPhongMaterial,
+  Texture,
+  CanvasTexture,
+  DataTexture,
+  Raycaster,
+  SRGBColorSpace,
+  LinearSRGBColorSpace,
+  NoToneMapping,
+  ACESFilmicToneMapping,
+  ReinhardToneMapping,
+  CineonToneMapping,
+  DoubleSide,
+  FrontSide,
+  BackSide,
+  AdditiveBlending,
+  NormalBlending,
+  SubtractiveBlending,
 };
