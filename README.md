@@ -3,6 +3,7 @@
 [![CI](https://github.com/vdirienzo/neon-serpent/actions/workflows/ci.yml/badge.svg)](https://github.com/vdirienzo/neon-serpent/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/vdirienzo/neon-serpent/actions/workflows/codeql.yml/badge.svg)](https://github.com/vdirienzo/neon-serpent/actions/workflows/codeql.yml)
 [![Deploy](https://github.com/vdirienzo/neon-serpent/actions/workflows/deploy.yml/badge.svg)](https://github.com/vdirienzo/neon-serpent/actions/workflows/deploy.yml)
+[![Vercel](https://img.shields.io/badge/Deploy-Vercel-000000.svg)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvdirienzo%2Fneon-serpent)
 [![License: MIT](https://img.shields.io/badge/License-MIT-00f6ff.svg)](./LICENSE)
 [![Node ≥ 18](https://img.shields.io/badge/node-%E2%89%A518-39ff14.svg)](https://nodejs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178c6.svg)](https://www.typescriptlang.org)
