@@ -82,7 +82,7 @@
 
 | ID | Title | Status | Notes |
 |----|-------|--------|-------|
-| NS-2026-004 | No Permissions-Policy | ✅ **Fixed** | Meta tag added |
+| NS-2026-004 | No Permissions-Policy | ✅ **Fixed** | Meta tag added + HTTP header via Vite plugin |
 | NS-2026-005 | No Referrer-Policy | ✅ **Fixed** | Meta tag added |
 | NS-2026-006 | `__bootErr` exposes paths | ✅ **Fixed** | Sanitized: only error type |
 | NS-2026-007 | innerHTML in UI | ✅ **Fixed** | Replaced with safe DOM API in 3 files |
@@ -108,10 +108,19 @@
 
 ### NS-2026-001: Content Security Policy
 
-**Added to `index.html`**:
+**Added to `index.html`** (with `'unsafe-inline'` for the inline importmap JSON):
 ```html
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://unpkg.com; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://unpkg.com; worker-src 'self' blob:; manifest-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests" />
 ```
+
+**Note**: `frame-ancestors` is NOT in the meta tag because browsers
+**ignore it in `<meta>` elements**. It must be delivered as an HTTP
+header. We provide it via:
+- `vite-plugins/security-headers.ts` (dev/preview server middleware)
+- `public/_headers` (Netlify/Cloudflare Pages)
+- `vercel.json` (Vercel)
+- GitHub Pages does NOT support custom HTTP headers — migration to
+  Cloudflare Pages recommended for full SOTA headers in production.
 
 ### NS-2026-002: Subresource Integrity
 

@@ -2,7 +2,7 @@
 // Cache-first for precached + same-origin GETs, with network write-through
 // and an offline navigation fallback to index.html.
 
-const CACHE_NAME = 'ns-cache-v5';
+const CACHE_NAME = 'ns-cache-v6';
 
 const PRECACHE_URLS = [
   './',
