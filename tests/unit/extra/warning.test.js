@@ -4,21 +4,25 @@ import assert from 'node:assert/strict';
 
 import { updateWarning } from '../../../src/game/WarningHighlight.js';
 
-function mkMat() { return { opacity: -1 }; }
+function mkMat() {
+  return { opacity: -1 };
+}
 
 test('cells adjacent to head that are danger receive pulse opacity', () => {
   // Head at (10, 10). Cell to the right (11, 10) is danger.
   const snake = { cells: [{ gx: 10, gz: 10 }] };
   const map = {
-    isDanger(x, z) { return x === 11 && z === 10; }
+    isDanger(x, z) {
+      return x === 11 && z === 10;
+    },
   };
   const matAdj = mkMat();
   const matOther = mkMat();
   const terrainMesh = {
     dangerEdges: new Map([
       ['11,10', matAdj],
-      ['5,5',   matOther]
-    ])
+      ['5,5', matOther],
+    ]),
   };
 
   // Pick t=0 -> sin(0) = 0 -> k = 0.5 -> pulse = 0.4 + 0.6 * 0.5 = 0.7
@@ -30,7 +34,7 @@ test('cells adjacent to head that are danger receive pulse opacity', () => {
 
 test('pulse opacity varies with t in [0.4, 1.0]', () => {
   const snake = { cells: [{ gx: 10, gz: 10 }] };
-  const map = { isDanger: (x, z) => (x === 11 && z === 10) };
+  const map = { isDanger: (x, z) => x === 11 && z === 10 };
   const mat = mkMat();
   const tm = { dangerEdges: new Map([['11,10', mat]]) };
 
@@ -81,7 +85,7 @@ test('missing snake or terrainMesh is a no-op', () => {
 test('only the 4 cardinal neighbors of head are considered adjacent', () => {
   // Diagonal cell (11, 11) is danger but the head's 4 neighbors are not.
   const snake = { cells: [{ gx: 10, gz: 10 }] };
-  const map = { isDanger: (x, z) => (x === 11 && z === 11) };
+  const map = { isDanger: (x, z) => x === 11 && z === 11 };
   const mat = mkMat();
   const tm = { dangerEdges: new Map([['11,11', mat]]) };
 

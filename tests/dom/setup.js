@@ -7,29 +7,59 @@ const ELEMENT_NODE = 1;
 const TEXT_NODE = 3;
 
 function makeClassList(initial) {
-  const set = new Set(String(initial || '').split(/\s+/).filter(Boolean));
+  const set = new Set(
+    String(initial || '')
+      .split(/\s+/)
+      .filter(Boolean)
+  );
   return {
     _set: set,
-    add(...names) { for (const n of names) if (n) set.add(n); },
-    remove(...names) { for (const n of names) set.delete(n); },
-    contains(name) { return set.has(name); },
-    toggle(name, force) {
-      if (force === true) { set.add(name); return true; }
-      if (force === false) { set.delete(name); return false; }
-      if (set.has(name)) { set.delete(name); return false; }
-      set.add(name); return true;
+    add(...names) {
+      for (const n of names) if (n) set.add(n);
     },
-    toString() { return [...set].join(' '); },
-    get length() { return set.size; }
+    remove(...names) {
+      for (const n of names) set.delete(n);
+    },
+    contains(name) {
+      return set.has(name);
+    },
+    toggle(name, force) {
+      if (force === true) {
+        set.add(name);
+        return true;
+      }
+      if (force === false) {
+        set.delete(name);
+        return false;
+      }
+      if (set.has(name)) {
+        set.delete(name);
+        return false;
+      }
+      set.add(name);
+      return true;
+    },
+    toString() {
+      return [...set].join(' ');
+    },
+    get length() {
+      return set.size;
+    },
   };
 }
 
 function makeStyle() {
   const style = {
     _props: new Map(),
-    setProperty(k, v) { this._props.set(String(k), v == null ? '' : String(v)); },
-    getPropertyValue(k) { return this._props.get(String(k)) || ''; },
-    removeProperty(k) { this._props.delete(String(k)); },
+    setProperty(k, v) {
+      this._props.set(String(k), v == null ? '' : String(v));
+    },
+    getPropertyValue(k) {
+      return this._props.get(String(k)) || '';
+    },
+    removeProperty(k) {
+      this._props.delete(String(k));
+    },
     // Pre-declared CSS props used by the modules under test. Direct field
     // assignment must work (e.g. `style.color = '#abc'`).
     display: '',
@@ -39,7 +69,7 @@ function makeStyle() {
     transform: '',
     color: '',
     background: '',
-    backgroundColor: ''
+    backgroundColor: '',
   };
   return style;
 }
@@ -53,9 +83,9 @@ function makeCanvas() {
       return {
         createRadialGradient: () => ({ addColorStop() {} }),
         fillRect() {},
-        fillStyle: ''
+        fillStyle: '',
       };
-    }
+    },
   };
 }
 
@@ -63,7 +93,8 @@ function matchesSelector(el, sel) {
   if (!sel) return false;
   sel = sel.trim();
   if (!sel) return false;
-  const re = /([.#]?[A-Za-z][\w-]*)|\[([A-Za-z_:][\w-]*)(?:=(?:"([^"]*)"|'([^']*)'|([^\s\]]+)))?\]/g;
+  const re =
+    /([.#]?[A-Za-z][\w-]*)|\[([A-Za-z_:][\w-]*)(?:=(?:"([^"]*)"|'([^']*)'|([^\s\]]+)))?\]/g;
   let m;
   let tagMatch = null;
   const classes = [];
@@ -115,7 +146,10 @@ function splitCompound(sel) {
     if (ch === '[') depth++;
     else if (ch === ']') depth = Math.max(0, depth - 1);
     if (depth === 0 && (ch === ' ' || ch === '\t' || ch === '>')) {
-      if (buf) { out.push(buf); buf = ''; }
+      if (buf) {
+        out.push(buf);
+        buf = '';
+      }
       continue;
     }
     buf += ch;
@@ -243,22 +277,34 @@ function parseAttrs(text, el) {
     } else if (key === 'id') {
       el.id = val;
     } else if (key === 'style') {
-      String(val).split(';').forEach((decl) => {
-        const colon = decl.indexOf(':');
-        if (colon < 0) return;
-        const k = decl.slice(0, colon).trim();
-        const v = decl.slice(colon + 1).trim();
-        if (k) el.style.setProperty(k, v);
-      });
+      String(val)
+        .split(';')
+        .forEach((decl) => {
+          const colon = decl.indexOf(':');
+          if (colon < 0) return;
+          const k = decl.slice(0, colon).trim();
+          const v = decl.slice(colon + 1).trim();
+          if (k) el.style.setProperty(k, v);
+        });
     } else if (key.startsWith('data-')) {
       el.dataset[key.slice(5)] = val;
     } else if (
-      key === 'type' || key === 'value' || key === 'min' || key === 'max' ||
-      key === 'step' || key === 'placeholder' || key === 'name' || key === 'href' ||
-      key === 'src' || key === 'tabindex' || key === 'role' || key === 'disabled' ||
-      key === 'checked' || key === 'selected'
+      key === 'type' ||
+      key === 'value' ||
+      key === 'min' ||
+      key === 'max' ||
+      key === 'step' ||
+      key === 'placeholder' ||
+      key === 'name' ||
+      key === 'href' ||
+      key === 'src' ||
+      key === 'tabindex' ||
+      key === 'role' ||
+      key === 'disabled' ||
+      key === 'checked' ||
+      key === 'selected'
     ) {
-      el[key] = (key === 'value' || key === 'min' || key === 'max' || key === 'step') ? val : val;
+      el[key] = key === 'value' || key === 'min' || key === 'max' || key === 'step' ? val : val;
     } else if (key.startsWith('aria-') || key === 'role' || key === 'hidden') {
       el.setAttribute(key, val);
     } else {
@@ -274,7 +320,7 @@ function makeTextNode(text) {
     nodeValue: String(text),
     textContent: String(text),
     parentNode: null,
-    _listeners: {}
+    _listeners: {},
   };
 }
 
@@ -299,21 +345,30 @@ function makeElement(tagName) {
     offsetHeight: 0,
     value: '',
     type: '',
-    title: ''
+    title: '',
   };
   Object.defineProperty(el, 'classList', { value: makeClassList(''), enumerable: true });
   Object.defineProperty(el, 'className', {
-    get() { return el.classList.toString(); },
+    get() {
+      return el.classList.toString();
+    },
     set(v) {
       el.classList._set.clear();
-      String(v).split(/\s+/).filter(Boolean).forEach((n) => el.classList._set.add(n));
-    }
+      String(v)
+        .split(/\s+/)
+        .filter(Boolean)
+        .forEach((n) => el.classList._set.add(n));
+    },
   });
   Object.defineProperty(el, 'firstChild', {
-    get() { return el.childNodes[0] || null; }
+    get() {
+      return el.childNodes[0] || null;
+    },
   });
   Object.defineProperty(el, 'lastChild', {
-    get() { return el.childNodes[el.childNodes.length - 1] || null; }
+    get() {
+      return el.childNodes[el.childNodes.length - 1] || null;
+    },
   });
   Object.defineProperty(el, 'textContent', {
     get() {
@@ -328,15 +383,17 @@ function makeElement(tagName) {
       el.children.length = 0;
       el.childNodes.length = 0;
       if (v != null && v !== '') el.appendChild(makeTextNode(String(v)));
-    }
+    },
   });
   Object.defineProperty(el, 'innerHTML', {
-    get() { return ''; },
+    get() {
+      return '';
+    },
     set(html) {
       el.children.length = 0;
       el.childNodes.length = 0;
       parseHTMLFragment(String(html || ''), el);
-    }
+    },
   });
 
   el.appendChild = (child) => {
@@ -364,10 +421,16 @@ function makeElement(tagName) {
     el.childNodes.splice(idx, 0, newNode);
     return newNode;
   };
-  el.remove = () => { if (el.parentNode) el.parentNode.removeChild(el); };
-  el.setAttribute = (k, v) => { el.attributes[k] = String(v); };
+  el.remove = () => {
+    if (el.parentNode) el.parentNode.removeChild(el);
+  };
+  el.setAttribute = (k, v) => {
+    el.attributes[k] = String(v);
+  };
   el.getAttribute = (k) => (k in el.attributes ? el.attributes[k] : null);
-  el.removeAttribute = (k) => { delete el.attributes[k]; };
+  el.removeAttribute = (k) => {
+    delete el.attributes[k];
+  };
   el.addEventListener = (type, fn /* , opts */) => {
     (listeners[type] = listeners[type] || []).push(fn);
   };
@@ -380,7 +443,11 @@ function makeElement(tagName) {
     if (!t) return;
     const list = (listeners[t] || []).slice();
     for (const fn of list) {
-      try { fn(evt); } catch (e) { /* subscriber error: don't break chain */ }
+      try {
+        fn(evt);
+      } catch (e) {
+        /* subscriber error: don't break chain */
+      }
     }
   };
   el.querySelector = (sel) => querySelector(el, sel);
@@ -414,22 +481,34 @@ function makeDocument() {
     _readyState: 'complete',
     body: makeElement('body'),
     head: makeElement('head'),
-    addEventListener(type, fn) { (docListeners[type] = docListeners[type] || []).push(fn); },
+    addEventListener(type, fn) {
+      (docListeners[type] = docListeners[type] || []).push(fn);
+    },
     removeEventListener(type, fn) {
       if (!docListeners[type]) return;
       docListeners[type] = docListeners[type].filter((f) => f !== fn);
     },
     dispatchEvent(evt) {
       const list = (docListeners[evt && evt.type] || []).slice();
-      for (const fn of list) { try { fn(evt); } catch (e) { /* ignore */ } }
+      for (const fn of list) {
+        try {
+          fn(evt);
+        } catch (e) {
+          /* ignore */
+        }
+      }
     },
-    getElementById(id) { return elements.get(id) || null; },
+    getElementById(id) {
+      return elements.get(id) || null;
+    },
     createElement(tag) {
       const tn = String(tag).toLowerCase();
       if (tn === 'canvas') return makeCanvas();
       return makeElement(tn);
     },
-    createTextNode(text) { return makeTextNode(text); },
+    createTextNode(text) {
+      return makeTextNode(text);
+    },
     createDocumentFragment() {
       const frag = makeElement('fragment');
       frag._isFragment = true;
@@ -443,15 +522,23 @@ function makeDocument() {
       const out = [];
       for (const e of elements.values()) if (matchesSelector(e, sel)) out.push(e);
       return out;
-    }
+    },
   };
   Object.defineProperty(doc, 'activeElement', {
-    get() { return doc._activeElement; },
-    set(v) { doc._activeElement = v; }
+    get() {
+      return doc._activeElement;
+    },
+    set(v) {
+      doc._activeElement = v;
+    },
   });
   Object.defineProperty(doc, 'readyState', {
-    get() { return doc._readyState; },
-    set(v) { doc._readyState = v; }
+    get() {
+      return doc._readyState;
+    },
+    set(v) {
+      doc._readyState = v;
+    },
   });
   return doc;
 }
@@ -464,15 +551,23 @@ function makeWindow(doc) {
     innerWidth: 1280,
     innerHeight: 720,
     location: { hostname: 'localhost', protocol: 'http:', href: 'http://localhost/' },
-    addEventListener(type, fn) { (listeners[type] = listeners[type] || []).push(fn); },
+    addEventListener(type, fn) {
+      (listeners[type] = listeners[type] || []).push(fn);
+    },
     removeEventListener(type, fn) {
       if (!listeners[type]) return;
       listeners[type] = listeners[type].filter((f) => f !== fn);
     },
     dispatchEvent(evt) {
       const list = (listeners[evt && evt.type] || []).slice();
-      for (const fn of list) { try { fn(evt); } catch (e) { /* ignore */ } }
-    }
+      for (const fn of list) {
+        try {
+          fn(evt);
+        } catch (e) {
+          /* ignore */
+        }
+      }
+    },
   };
   return win;
 }
@@ -480,12 +575,24 @@ function makeWindow(doc) {
 function makeLocalStorage() {
   const store = new Map();
   return {
-    getItem(k) { return store.has(k) ? store.get(k) : null; },
-    setItem(k, v) { store.set(String(k), String(v)); },
-    removeItem(k) { store.delete(String(k)); },
-    clear() { store.clear(); },
-    key(i) { return [...store.keys()][i] ?? null; },
-    get length() { return store.size; }
+    getItem(k) {
+      return store.has(k) ? store.get(k) : null;
+    },
+    setItem(k, v) {
+      store.set(String(k), String(v));
+    },
+    removeItem(k) {
+      store.delete(String(k));
+    },
+    clear() {
+      store.clear();
+    },
+    key(i) {
+      return [...store.keys()][i] ?? null;
+    },
+    get length() {
+      return store.size;
+    },
   };
 }
 
@@ -502,7 +609,7 @@ export function installDOM() {
     localStorage: g.localStorage,
     requestAnimationFrame: g.requestAnimationFrame,
     cancelAnimationFrame: g.cancelAnimationFrame,
-    navigator: g.navigator
+    navigator: g.navigator,
   };
   const doc = makeDocument();
   const win = makeWindow(doc);
@@ -528,9 +635,15 @@ export function uninstallDOM() {
   _installed = false;
 }
 
-export function getDocument() { return globalThis.document; }
-export function getWindow() { return globalThis.window; }
-export function getLocalStorage() { return globalThis.localStorage; }
+export function getDocument() {
+  return globalThis.document;
+}
+export function getWindow() {
+  return globalThis.window;
+}
+export function getLocalStorage() {
+  return globalThis.localStorage;
+}
 
 export function registerElement(id, el) {
   if (!_installed) installDOM();
@@ -546,7 +659,11 @@ export function clearDOM() {
   globalThis.localStorage.clear();
 }
 
-export function mockElement(tag = 'div') { return makeElement(tag); }
-export function mockTextNode(text = '') { return makeTextNode(text); }
+export function mockElement(tag = 'div') {
+  return makeElement(tag);
+}
+export function mockTextNode(text = '') {
+  return makeTextNode(text);
+}
 
 export const TEST_CONSTANTS = Object.freeze({ ELEMENT_NODE, TEXT_NODE });

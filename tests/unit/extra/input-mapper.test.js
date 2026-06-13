@@ -128,21 +128,30 @@ test('Y component of position/target is ignored (only X/Z matter)', () => {
   const low = cam({ x: 0, y: -10, z: 10 }, { x: 0, y: 5, z: 0 });
   const high = cam({ x: 0, y: 100, z: 10 }, { x: 0, y: -50, z: 0 });
   assert.equal(mapDirCamera('up', low.pos, low.target), mapDirCamera('up', high.pos, high.target));
-  assert.equal(mapDirCamera('down', low.pos, low.target), mapDirCamera('down', high.pos, high.target));
-  assert.equal(mapDirCamera('left', low.pos, low.target), mapDirCamera('left', high.pos, high.target));
-  assert.equal(mapDirCamera('right', low.pos, low.target), mapDirCamera('right', high.pos, high.target));
+  assert.equal(
+    mapDirCamera('down', low.pos, low.target),
+    mapDirCamera('down', high.pos, high.target)
+  );
+  assert.equal(
+    mapDirCamera('left', low.pos, low.target),
+    mapDirCamera('left', high.pos, high.target)
+  );
+  assert.equal(
+    mapDirCamera('right', low.pos, low.target),
+    mapDirCamera('right', high.pos, high.target)
+  );
 });
 
 test('result is always one of the four valid direction names', () => {
   // Sweep many camera positions and verify the return is always valid.
   const VALID = new Set(['up', 'down', 'left', 'right']);
   const cameras = [
-    { pos: { x: 0,  y: 0, z: 10 },  target: { x: 0,  y: 0, z: 0 } },
-    { pos: { x: 0,  y: 0, z: -10 }, target: { x: 0,  y: 0, z: 0 } },
-    { pos: { x: 10, y: 0, z: 0 },   target: { x: -10, y: 0, z: 0 } },
-    { pos: { x: -10, y: 0, z: 0 },  target: { x: 10, y: 0, z: 0 } },
-    { pos: { x: 0,  y: 0, z: 10 },  target: { x: 10, y: 0, z: -10 } },
-    { pos: { x: 7,  y: 0, z: 7 },   target: { x: 0,  y: 0, z: 0 } }
+    { pos: { x: 0, y: 0, z: 10 }, target: { x: 0, y: 0, z: 0 } },
+    { pos: { x: 0, y: 0, z: -10 }, target: { x: 0, y: 0, z: 0 } },
+    { pos: { x: 10, y: 0, z: 0 }, target: { x: -10, y: 0, z: 0 } },
+    { pos: { x: -10, y: 0, z: 0 }, target: { x: 10, y: 0, z: 0 } },
+    { pos: { x: 0, y: 0, z: 10 }, target: { x: 10, y: 0, z: -10 } },
+    { pos: { x: 7, y: 0, z: 7 }, target: { x: 0, y: 0, z: 0 } },
   ];
   for (const c of cameras) {
     for (const dir of ['up', 'down', 'left', 'right']) {
@@ -155,10 +164,10 @@ test('result is always one of the four valid direction names', () => {
 test('"up" and "down" always map to opposite world directions', () => {
   // By construction OPP[fName] is the opposite of fName.
   const cameras = [
-    { pos: { x: 0,  y: 0, z: 10 },  target: { x: 0,  y: 0, z: 0 } },
-    { pos: { x: 0,  y: 0, z: -10 }, target: { x: 0,  y: 0, z: 0 } },
-    { pos: { x: 10, y: 0, z: 0 },   target: { x: -10, y: 0, z: 0 } },
-    { pos: { x: 0,  y: 0, z: 10 },  target: { x: 10, y: 0, z: -10 } }
+    { pos: { x: 0, y: 0, z: 10 }, target: { x: 0, y: 0, z: 0 } },
+    { pos: { x: 0, y: 0, z: -10 }, target: { x: 0, y: 0, z: 0 } },
+    { pos: { x: 10, y: 0, z: 0 }, target: { x: -10, y: 0, z: 0 } },
+    { pos: { x: 0, y: 0, z: 10 }, target: { x: 10, y: 0, z: -10 } },
   ];
   for (const c of cameras) {
     const up = mapDirCamera('up', c.pos, c.target);
@@ -172,10 +181,10 @@ test('"up" and "down" always map to opposite world directions', () => {
 
 test('"left" and "right" always map to opposite world directions', () => {
   const cameras = [
-    { pos: { x: 0,  y: 0, z: 10 },  target: { x: 0,  y: 0, z: 0 } },
-    { pos: { x: 0,  y: 0, z: -10 }, target: { x: 0,  y: 0, z: 0 } },
-    { pos: { x: 10, y: 0, z: 0 },   target: { x: -10, y: 0, z: 0 } },
-    { pos: { x: 0,  y: 0, z: 10 },  target: { x: 10, y: 0, z: -10 } }
+    { pos: { x: 0, y: 0, z: 10 }, target: { x: 0, y: 0, z: 0 } },
+    { pos: { x: 0, y: 0, z: -10 }, target: { x: 0, y: 0, z: 0 } },
+    { pos: { x: 10, y: 0, z: 0 }, target: { x: -10, y: 0, z: 0 } },
+    { pos: { x: 0, y: 0, z: 10 }, target: { x: 10, y: 0, z: -10 } },
   ];
   for (const c of cameras) {
     const left = mapDirCamera('left', c.pos, c.target);

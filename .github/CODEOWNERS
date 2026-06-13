@@ -1,0 +1,44 @@
+# CODEOWNERS — automatic review assignment
+# Each line is a file pattern followed by one or more owners.
+# Order matters: later patterns override earlier ones.
+
+# Default owners for everything
+* @vdirienzo
+
+# Core engine and architecture
+/src/core/ @vdirienzo
+/src/types/ @vdirienzo
+
+# Game logic (highest change frequency)
+/src/game/ @vdirienzo
+/src/entities/ @vdirienzo
+/src/world/ @vdirienzo
+
+# Engine layers
+/src/engine/ @vdirienzo
+/src/render/ @vdirienzo
+/src/audio/ @vdirienzo
+/src/input/ @vdirienzo
+/src/camera/ @vdirienzo
+
+# UI
+/src/ui/ @vdirienzo
+/src/components/ @vdirienzo
+/src/styles/ @vdirienzo
+
+# Config, build, tooling
+/vite.config.ts @vdirienzo
+/vitest.config.ts @vdirienzo
+/tsconfig.json @vdirienzo
+/eslint.config.js @vdirienzo
+/.prettierrc @vdirienzo
+
+# CI / deployment
+/.github/ @vdirienzo
+/package.json @vdirienzo
+
+# Documentation
+/docs/ @vdirienzo
+/README.md @vdirienzo
+/ARCHITECTURE.md @vdirienzo
+/CHANGELOG.md @vdirienzo

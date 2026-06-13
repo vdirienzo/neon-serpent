@@ -17,9 +17,9 @@ function spyConsole() {
   const lastArgs = { debug: null, info: null, warn: null, error: null };
   const orig = {
     debug: console.debug,
-    info:  console.info,
-    warn:  console.warn,
-    error: console.error
+    info: console.info,
+    warn: console.warn,
+    error: console.error,
   };
   for (const k of Object.keys(counts)) {
     console[k] = (...args) => {
@@ -32,14 +32,14 @@ function spyConsole() {
     lastArgs,
     restore() {
       for (const k of Object.keys(orig)) console[k] = orig[k];
-    }
+    },
   };
 }
 
 test('log object exposes debug, info, warn, error as functions', () => {
   assert.equal(typeof log.debug, 'function');
-  assert.equal(typeof log.info,  'function');
-  assert.equal(typeof log.warn,  'function');
+  assert.equal(typeof log.info, 'function');
+  assert.equal(typeof log.warn, 'function');
   assert.equal(typeof log.error, 'function');
 });
 
@@ -64,7 +64,7 @@ test('setLevel ignores unknown levels (level stays unchanged)', () => {
   log.info('should be silent');
   spy.restore();
   assert.equal(spy.counts.debug, 0, 'debug must be silent at warn');
-  assert.equal(spy.counts.info,  0, 'info must be silent at warn');
+  assert.equal(spy.counts.info, 0, 'info must be silent at warn');
 });
 
 test('messages are prefixed with the upper-cased level tag', () => {
@@ -75,12 +75,12 @@ test('messages are prefixed with the upper-cased level tag', () => {
   log.warn('c');
   log.error('d');
   assert.equal(spy.lastArgs.debug[0], '[DEBUG]');
-  assert.equal(spy.lastArgs.info[0],  '[INFO]');
-  assert.equal(spy.lastArgs.warn[0],  '[WARN]');
+  assert.equal(spy.lastArgs.info[0], '[INFO]');
+  assert.equal(spy.lastArgs.warn[0], '[WARN]');
   assert.equal(spy.lastArgs.error[0], '[ERROR]');
   // The rest of the args are forwarded verbatim.
   assert.equal(spy.lastArgs.debug[1], 'a');
-  assert.equal(spy.lastArgs.warn[1],  'c');
+  assert.equal(spy.lastArgs.warn[1], 'c');
   spy.restore();
 });
 
@@ -92,8 +92,8 @@ test('at level warn, debug and info are suppressed, warn and error fire', () => 
   log.warn('w');
   log.error('e');
   assert.equal(spy.counts.debug, 0);
-  assert.equal(spy.counts.info,  0);
-  assert.equal(spy.counts.warn,  1);
+  assert.equal(spy.counts.info, 0);
+  assert.equal(spy.counts.warn, 1);
   assert.equal(spy.counts.error, 1);
   spy.restore();
 });
@@ -106,8 +106,8 @@ test('at level debug, every method fires once', () => {
   log.warn('w');
   log.error('e');
   assert.equal(spy.counts.debug, 1);
-  assert.equal(spy.counts.info,  1);
-  assert.equal(spy.counts.warn,  1);
+  assert.equal(spy.counts.info, 1);
+  assert.equal(spy.counts.warn, 1);
   assert.equal(spy.counts.error, 1);
   spy.restore();
 });
@@ -120,8 +120,8 @@ test('at level none, nothing fires', () => {
   log.warn('w');
   log.error('e');
   assert.equal(spy.counts.debug, 0);
-  assert.equal(spy.counts.info,  0);
-  assert.equal(spy.counts.warn,  0);
+  assert.equal(spy.counts.info, 0);
+  assert.equal(spy.counts.warn, 0);
   assert.equal(spy.counts.error, 0);
   spy.restore();
 });
@@ -134,8 +134,8 @@ test('at level error, only error fires', () => {
   log.warn('w');
   log.error('e');
   assert.equal(spy.counts.debug, 0);
-  assert.equal(spy.counts.info,  0);
-  assert.equal(spy.counts.warn,  0);
+  assert.equal(spy.counts.info, 0);
+  assert.equal(spy.counts.warn, 0);
   assert.equal(spy.counts.error, 1);
   spy.restore();
 });

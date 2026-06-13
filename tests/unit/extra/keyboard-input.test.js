@@ -6,17 +6,17 @@
 // listener that attach() registers, then drive it manually.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import {
-  KeyboardInput,
-  isDirKey,
-  dirForKey
-} from '../../../src/input/KeyboardInput.js';
+import { KeyboardInput, isDirKey, dirForKey } from '../../../src/input/KeyboardInput.js';
 
 function installWindowMock() {
   const calls = { add: [], remove: [] };
   const mock = {
-    addEventListener(event, fn, opts) { calls.add.push({ event, fn, opts }); },
-    removeEventListener(event, fn) { calls.remove.push({ event, fn }); }
+    addEventListener(event, fn, opts) {
+      calls.add.push({ event, fn, opts });
+    },
+    removeEventListener(event, fn) {
+      calls.remove.push({ event, fn });
+    },
   };
   globalThis.window = mock;
   return { mock, calls };
@@ -63,9 +63,14 @@ test('events with e.repeat=true are ignored', () => {
 test('multiple "key" handlers all fire for one event', () => {
   const { calls } = installWindowMock();
   const kb = new KeyboardInput();
-  let a = 0, b = 0;
-  kb.on('key', () => { a++; });
-  kb.on('key', () => { b++; });
+  let a = 0,
+    b = 0;
+  kb.on('key', () => {
+    a++;
+  });
+  kb.on('key', () => {
+    b++;
+  });
   kb.attach();
   calls.add[0].fn({ code: 'ArrowUp', repeat: false });
   assert.equal(a, 1);

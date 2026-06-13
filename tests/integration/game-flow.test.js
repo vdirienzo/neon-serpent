@@ -17,26 +17,31 @@ test('TITLE -> COUNTDOWN -> PLAYING -> DYING -> OVER transition sequence fires S
   setState(STATE.DYING);
   setState(STATE.OVER);
 
-  assert.deepEqual(seen, [
-    STATE.TITLE,
-    STATE.COUNTDOWN,
-    STATE.PLAYING,
-    STATE.DYING,
-    STATE.OVER
-  ], 'STATE_CHANGE should fire once for each unique transition');
+  assert.deepEqual(
+    seen,
+    [STATE.TITLE, STATE.COUNTDOWN, STATE.PLAYING, STATE.DYING, STATE.OVER],
+    'STATE_CHANGE should fire once for each unique transition'
+  );
 
   assert.equal(getState(), STATE.OVER, 'final state should be OVER');
   off();
 });
 
 test('isPlaying is true only during COUNTDOWN, PLAYING, DYING', () => {
-  setState(STATE.TITLE);     assert.equal(isPlaying(), false);
-  setState(STATE.COUNTDOWN); assert.equal(isPlaying(), true);
-  setState(STATE.PLAYING);   assert.equal(isPlaying(), true);
-  setState(STATE.DYING);     assert.equal(isPlaying(), true);
-  setState(STATE.OVER);      assert.equal(isPlaying(), false);
-  setState(STATE.WIN);       assert.equal(isPlaying(), false);
-  setState(STATE.PAUSED);    assert.equal(isPlaying(), false);
+  setState(STATE.TITLE);
+  assert.equal(isPlaying(), false);
+  setState(STATE.COUNTDOWN);
+  assert.equal(isPlaying(), true);
+  setState(STATE.PLAYING);
+  assert.equal(isPlaying(), true);
+  setState(STATE.DYING);
+  assert.equal(isPlaying(), true);
+  setState(STATE.OVER);
+  assert.equal(isPlaying(), false);
+  setState(STATE.WIN);
+  assert.equal(isPlaying(), false);
+  setState(STATE.PAUSED);
+  assert.equal(isPlaying(), false);
 });
 
 test('setState with the same value does not re-emit STATE_CHANGE', () => {
@@ -69,8 +74,12 @@ test('listener error does not stop subsequent STATE_CHANGE listeners', () => {
   clearBus();
   setState(STATE.TITLE);
   let reached = false;
-  on(EVT.STATE_CHANGE, () => { throw new Error('boom'); });
-  const off = on(EVT.STATE_CHANGE, (s) => { if (s === STATE.PLAYING) reached = true; });
+  on(EVT.STATE_CHANGE, () => {
+    throw new Error('boom');
+  });
+  const off = on(EVT.STATE_CHANGE, (s) => {
+    if (s === STATE.PLAYING) reached = true;
+  });
   setState(STATE.PLAYING);
   assert.ok(reached, 'subsequent listeners must still fire after a handler throws');
   off();

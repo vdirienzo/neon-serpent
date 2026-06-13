@@ -1,5 +1,21 @@
 # NEØN SERPENT
 
+[![CI](https://github.com/vdirienzo/neon-serpent/actions/workflows/ci.yml/badge.svg)](https://github.com/vdirienzo/neon-serpent/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/vdirienzo/neon-serpent/actions/workflows/codeql.yml/badge.svg)](https://github.com/vdirienzo/neon-serpent/actions/workflows/codeql.yml)
+[![Deploy](https://github.com/vdirienzo/neon-serpent/actions/workflows/deploy.yml/badge.svg)](https://github.com/vdirienzo/neon-serpent/actions/workflows/deploy.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-00f6ff.svg)](./LICENSE)
+[![Node ≥ 18](https://img.shields.io/badge/node-%E2%89%A518-39ff14.svg)](https://nodejs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178c6.svg)](https://www.typescriptlang.org)
+[![Vite](https://img.shields.io/badge/Vite-5.4-646cff.svg)](https://vitejs.dev)
+[![Three.js](https://img.shields.io/badge/Three.js-r149-black.svg)](https://threejs.org)
+[![Tests](https://img.shields.io/badge/tests-438%20passing-brightgreen.svg)](./tests)
+[![Coverage](https://img.shields.io/badge/coverage-target%2070%25-yellow.svg)](./vitest.config.ts)
+[![Code style: Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io)
+[![Linter: ESLint](https://img.shields.io/badge/linter-eslint-4b32c3.svg)](https://eslint.org)
+[![Security: CodeQL](https://img.shields.io/badge/security-CodeQL-blueviolet.svg)](./.github/workflows/codeql.yml)
+[![Maintenance](https://img.shields.io/badge/maintenance-active-brightgreen.svg)](./.github/CODEOWNERS)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-ff2bd6.svg)](./.github/CONTRIBUTING.md)
+
 > A 3D snake game with synthwave/neon aesthetics, WebGL2 rendering,
 > adaptive audio, three game modes, and full keyboard / touch /
 > accessibility support.

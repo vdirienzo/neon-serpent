@@ -22,8 +22,15 @@ class MockPickups {
   spawn(type, gx, gz) {
     const entry = {
       mesh: { userData: { core: { rotation: {} } } },
-      gx, gz, type, kind: type, active: true,
-      t0: 0, color: 0, size: 0.4, baseY: 0.6
+      gx,
+      gz,
+      type,
+      kind: type,
+      active: true,
+      t0: 0,
+      color: 0,
+      size: 0.4,
+      baseY: 0.6,
     };
     this.list.push(entry);
     return entry;
@@ -44,7 +51,7 @@ class MockPickups {
     return null;
   }
   isOccupied(gx, gz) {
-    return this.list.some(p => p.active && p.gx === gx && p.gz === gz);
+    return this.list.some((p) => p.active && p.gx === gx && p.gz === gz);
   }
 }
 
@@ -52,7 +59,9 @@ test('checkCollect invokes callback with the matching orb and removes it from th
   const p = new MockPickups();
   p.spawn('orb', 5, 5);
   let called = null;
-  const result = p.checkCollect(5, 5, (entry) => { called = entry; });
+  const result = p.checkCollect(5, 5, (entry) => {
+    called = entry;
+  });
   assert.ok(result, 'checkCollect should return the picked-up entry');
   assert.equal(called && called.type, 'orb');
   assert.equal(p.list.length, 0, 'list should be empty after pickup');
@@ -62,7 +71,9 @@ test('checkCollect invokes callback with the matching orb and removes it from th
 test('checkCollect on an empty list is a no-op and returns null', () => {
   const p = new MockPickups();
   let called = false;
-  const result = p.checkCollect(0, 0, () => { called = true; });
+  const result = p.checkCollect(0, 0, () => {
+    called = true;
+  });
   assert.equal(result, null);
   assert.equal(called, false, 'callback must not fire when nothing is at the cell');
 });
@@ -73,7 +84,9 @@ test('checkCollect picks the entry whose (gx, gz) matches, ignoring other entrie
   p.spawn('gem', 7, 7);
   p.spawn('crystal', 9, 9);
   let collected = null;
-  const result = p.checkCollect(7, 7, (e) => { collected = e; });
+  const result = p.checkCollect(7, 7, (e) => {
+    collected = e;
+  });
   assert.ok(result);
   assert.equal(collected.type, 'gem');
   assert.equal(p.list.length, 2, 'only the gem should be removed');
@@ -87,9 +100,15 @@ test('each pickup kind: checkCollect fires the callback with the right type', ()
     const p = new MockPickups();
     p.spawn(kind, 10, 10);
     let seen = null;
-    const r = p.checkCollect(10, 10, (e) => { seen = e; });
+    const r = p.checkCollect(10, 10, (e) => {
+      seen = e;
+    });
     assert.ok(r, `kind ${kind}: expected a hit`);
-    assert.equal(seen && seen.type, kind, `kind ${kind}: callback should receive the matching type`);
+    assert.equal(
+      seen && seen.type,
+      kind,
+      `kind ${kind}: callback should receive the matching type`
+    );
     assert.equal(p.list.length, 0, `kind ${kind}: list should be empty after collect`);
   }
 });
@@ -98,7 +117,9 @@ test('checkCollect returns the entry (not just calls the callback) so callers ca
   const p = new MockPickups();
   const orig = p.spawn('dice', 3, 3);
   let received = null;
-  const ret = p.checkCollect(3, 3, (e) => { received = e; });
+  const ret = p.checkCollect(3, 3, (e) => {
+    received = e;
+  });
   // Returned value and callback arg should be the same reference.
   assert.strictEqual(ret, received, 'return value should be the same entry passed to the callback');
   assert.strictEqual(ret, orig, 'returned entry should be the originally spawned one');
@@ -109,7 +130,9 @@ test('checkCollect prioritises the last entry when two stack at the same cell (L
   const a = p.spawn('orb', 1, 1);
   const b = p.spawn('gem', 1, 1);
   let collected = null;
-  p.checkCollect(1, 1, (e) => { collected = e; });
+  p.checkCollect(1, 1, (e) => {
+    collected = e;
+  });
   assert.strictEqual(collected, b, 'last-spawned entry should win at the same cell');
   // The first entry should still be there.
   assert.equal(p.list.length, 1);

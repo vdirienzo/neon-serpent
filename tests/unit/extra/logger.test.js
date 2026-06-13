@@ -8,16 +8,23 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { Logger, setLevel, getLevel, setReporter, setBaseContext, log } from '../../../src/core/Logger.js';
+import {
+  Logger,
+  setLevel,
+  getLevel,
+  setReporter,
+  setBaseContext,
+  log,
+} from '../../../src/core/Logger.js';
 
 function spyConsole() {
   const counts = { debug: 0, info: 0, warn: 0, error: 0 };
   const lastArgs = { debug: null, info: null, warn: null, error: null };
   const orig = {
     debug: console.debug,
-    info:  console.info,
-    warn:  console.warn,
-    error: console.error
+    info: console.info,
+    warn: console.warn,
+    error: console.error,
   };
   for (const k of Object.keys(counts)) {
     console[k] = (...args) => {
@@ -30,7 +37,7 @@ function spyConsole() {
     lastArgs,
     restore() {
       for (const k of Object.keys(orig)) console[k] = orig[k];
-    }
+    },
   };
 }
 
@@ -43,21 +50,21 @@ function resetLogger() {
 test('Logger has debug/info/warn/error as functions', () => {
   resetLogger();
   assert.equal(typeof Logger.debug, 'function');
-  assert.equal(typeof Logger.info,  'function');
-  assert.equal(typeof Logger.warn,  'function');
+  assert.equal(typeof Logger.info, 'function');
+  assert.equal(typeof Logger.warn, 'function');
   assert.equal(typeof Logger.error, 'function');
 });
 
 test('Logger.setLevel accepts every valid level', () => {
   assert.equal(setLevel('debug'), true);
   assert.equal(getLevel(), 'debug');
-  assert.equal(setLevel('info'),  true);
+  assert.equal(setLevel('info'), true);
   assert.equal(getLevel(), 'info');
-  assert.equal(setLevel('warn'),  true);
+  assert.equal(setLevel('warn'), true);
   assert.equal(getLevel(), 'warn');
   assert.equal(setLevel('error'), true);
   assert.equal(getLevel(), 'error');
-  assert.equal(setLevel('none'),  true);
+  assert.equal(setLevel('none'), true);
   assert.equal(getLevel(), 'none');
   resetLogger();
 });
@@ -147,8 +154,8 @@ test('Level filter: at warn, debug and info are silent', () => {
   Logger.error('e');
   spy.restore();
   assert.equal(spy.counts.debug, 0);
-  assert.equal(spy.counts.info,  0);
-  assert.equal(spy.counts.warn,  1);
+  assert.equal(spy.counts.info, 0);
+  assert.equal(spy.counts.warn, 1);
   assert.equal(spy.counts.error, 1);
 });
 
@@ -162,8 +169,8 @@ test('Level filter: at error, only error fires', () => {
   Logger.error('e');
   spy.restore();
   assert.equal(spy.counts.debug, 0);
-  assert.equal(spy.counts.info,  0);
-  assert.equal(spy.counts.warn,  0);
+  assert.equal(spy.counts.info, 0);
+  assert.equal(spy.counts.warn, 0);
   assert.equal(spy.counts.error, 1);
 });
 
@@ -177,8 +184,8 @@ test('Level filter: at none, nothing fires', () => {
   Logger.error('e');
   spy.restore();
   assert.equal(spy.counts.debug, 0);
-  assert.equal(spy.counts.info,  0);
-  assert.equal(spy.counts.warn,  0);
+  assert.equal(spy.counts.info, 0);
+  assert.equal(spy.counts.warn, 0);
   assert.equal(spy.counts.error, 0);
 });
 
@@ -186,8 +193,8 @@ test('Logger.child returns a logger with the same shape', () => {
   resetLogger();
   const child = Logger.child({ module: 'a' });
   assert.equal(typeof child.debug, 'function');
-  assert.equal(typeof child.info,  'function');
-  assert.equal(typeof child.warn,  'function');
+  assert.equal(typeof child.info, 'function');
+  assert.equal(typeof child.warn, 'function');
   assert.equal(typeof child.error, 'function');
   assert.equal(typeof child.child, 'function');
 });
@@ -212,7 +219,7 @@ test('Child context does not leak back to the parent', () => {
   child.info('child');
   spy.restore();
   const parentLine = spy.lastArgs.info[0];
-  const childLine  = spy.lastArgs.info[0];
+  const childLine = spy.lastArgs.info[0];
   // Two calls were made; both produced an [INFO] line.
   assert.equal(spy.counts.info, 2);
   // Last call is the child call: must NOT have inherited a parent key.
@@ -302,7 +309,9 @@ test('Per-call context overrides setBaseContext on the same key', () => {
 test('A throwing reporter does not break logging', () => {
   resetLogger();
   setLevel('debug');
-  setReporter(() => { throw new Error('reporter boom'); });
+  setReporter(() => {
+    throw new Error('reporter boom');
+  });
   const spy = spyConsole();
   assert.doesNotThrow(() => Logger.error('still logged'));
   spy.restore();
@@ -324,8 +333,8 @@ test('Non-string message values are JSON-serialised in the line', () => {
 test('Back-compat: log object from Log.js is re-exported', () => {
   assert.equal(typeof log, 'object');
   assert.equal(typeof log.debug, 'function');
-  assert.equal(typeof log.info,  'function');
-  assert.equal(typeof log.warn,  'function');
+  assert.equal(typeof log.info, 'function');
+  assert.equal(typeof log.warn, 'function');
   assert.equal(typeof log.error, 'function');
 });
 

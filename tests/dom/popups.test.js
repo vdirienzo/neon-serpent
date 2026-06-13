@@ -36,7 +36,10 @@ test('popupAt(world, text) activates a popup with the right text and class', () 
   // At least one popup should now be visible with text "+10".
   let visible = null;
   for (const c of popups.children) {
-    if (c.style.display === 'block') { visible = c; break; }
+    if (c.style.display === 'block') {
+      visible = c;
+      break;
+    }
   }
   assert.ok(visible, 'one popup should be visible after popupAt');
   assert.equal(visible.textContent, '+10');
@@ -103,7 +106,7 @@ test('update() leaves inactive popups untouched', () => {
     left: c.style.left,
     top: c.style.top,
     opacity: c.style.opacity,
-    display: c.style.display
+    display: c.style.display,
   }));
   Popups.update(camera, 0.016);
   popups.children.forEach((c, i) => {

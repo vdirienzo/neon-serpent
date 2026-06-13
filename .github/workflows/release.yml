@@ -1,0 +1,47 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release:
+    name: Semantic Release
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - run: npm ci --prefer-offline --no-audit
+
+      - name: Semantic release
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: false
+
+      - name: Bump SW cache version
+        if: success()
+        run: |
+          if git diff --name-only HEAD~1 HEAD | grep -q "package.json"; then
+            NEW_VERSION=$(node -p "require('./package.json').version")
+            sed -i "s/const CACHE_NAME = 'ns-cache-v[0-9]*';/const CACHE_NAME = 'ns-cache-v${NEW_VERSION//./}';/" sw.js
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add sw.js
+            git commit -m "chore: bump SW cache to v${NEW_VERSION//./} for ${NEW_VERSION}" || true
+            git push || true
+          fi

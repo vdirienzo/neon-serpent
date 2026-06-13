@@ -4,8 +4,12 @@ import { computeReachable } from '../../src/world/Reachability.js';
 
 function makeMap(cells) {
   return {
-    isSolid(x, z) { return cells[z]?.[x] === 1; },
-    heightAt(x, z) { return cells[z]?.[x] === 1 ? 0 : -99; }
+    isSolid(x, z) {
+      return cells[z]?.[x] === 1;
+    },
+    heightAt(x, z) {
+      return cells[z]?.[x] === 1 ? 0 : -99;
+    },
   };
 }
 
@@ -14,7 +18,7 @@ describe('computeReachable', () => {
     const map = makeMap([
       [1, 1, 1],
       [1, 1, 1],
-      [1, 1, 1]
+      [1, 1, 1],
     ]);
     const reachable = computeReachable(map, 0, 0);
     assert.equal(reachable.size, 9);
@@ -22,8 +26,12 @@ describe('computeReachable', () => {
 
   it('excludes cells beyond STEP_CLIMB', () => {
     const map = {
-      isSolid(x, z) { return true; },
-      heightAt(x, z) { return z === 1 ? 20 : 0; }
+      isSolid(x, z) {
+        return true;
+      },
+      heightAt(x, z) {
+        return z === 1 ? 20 : 0;
+      },
     };
     const reachable = computeReachable(map, 0, 0);
     assert.ok(reachable.has('0,0'));
@@ -36,7 +44,7 @@ describe('computeReachable', () => {
     const map = makeMap([
       [1, 0, 1],
       [0, 1, 0],
-      [1, 0, 1]
+      [1, 0, 1],
     ]);
     const reachable = computeReachable(map, 1, 1);
     assert.equal(reachable.size, 1);
@@ -47,7 +55,7 @@ describe('computeReachable', () => {
     const map = makeMap([
       [1, 1, 0, 0, 1],
       [0, 0, 0, 0, 0],
-      [0, 0, 1, 1, 1]
+      [0, 0, 1, 1, 1],
     ]);
     const reachable = computeReachable(map, 0, 0);
     assert.equal(reachable.size, 2);
@@ -60,7 +68,7 @@ describe('computeReachable', () => {
     const map = makeMap([
       [0, 0, 0],
       [0, 1, 0],
-      [0, 0, 0]
+      [0, 0, 0],
     ]);
     const reachable = computeReachable(map, 1, 1);
     assert.equal(reachable.size, 1);

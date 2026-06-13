@@ -14,12 +14,9 @@ import { register } from 'node:module';
 // Install the 'three' -> mock redirect for any subsequent imports.
 register('./_three-loader.mjs', import.meta.url);
 
-const { COLORS, hexToColor, cloneColor, lerpColors } =
-  await import('../../../src/core/Color.js');
+const { COLORS, hexToColor, cloneColor, lerpColors } = await import('../../../src/core/Color.js');
 
-const EXPECTED_KEYS = [
-  'BG', 'CYAN', 'MAG', 'GOLD', 'GREEN', 'VIO', 'WHITE', 'ORANGE', 'RED'
-];
+const EXPECTED_KEYS = ['BG', 'CYAN', 'MAG', 'GOLD', 'GREEN', 'VIO', 'WHITE', 'ORANGE', 'RED'];
 
 test('COLORS is frozen', () => {
   assert.equal(Object.isFrozen(COLORS), true);
@@ -50,7 +47,7 @@ test('WHITE resolves to (1, 1, 1)', () => {
 test('BG is a very dark color (near black)', () => {
   assert.ok(COLORS.BG.r < 0.05);
   assert.ok(COLORS.BG.g < 0.05);
-  assert.ok(COLORS.BG.b < 0.10);
+  assert.ok(COLORS.BG.b < 0.1);
 });
 
 test('hexToColor, cloneColor, lerpColors are exported functions', () => {

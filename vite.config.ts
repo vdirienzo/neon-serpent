@@ -5,10 +5,10 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-export default defineConfig({
+export default defineConfig(({ mode }: { mode: string }) => ({
   root: '.',
   publicDir: 'public',
-  base: './',
+  base: mode === 'production' ? (process.env.VITE_BASE || './') : './',
 
   resolve: {
     alias: {
@@ -43,21 +43,16 @@ export default defineConfig({
     sourcemap: true,
     outDir: 'dist',
     assetsDir: 'assets',
-    minify: 'esbuild',
     cssCodeSplit: true,
     reportCompressedSize: false,
     chunkSizeWarningLimit: 1024,
     rollupOptions: {
-      output: {
-        manualChunks: {
-          three: ['three'],
-        },
-      },
-    },
+      external: (id: string) => id === 'three' || id.startsWith('three/')
+    }
   },
 
   optimizeDeps: {
-    include: ['three'],
+    exclude: ['three']
   },
 
   test: {
@@ -87,4 +82,5 @@ export default defineConfig({
       },
     },
   },
-});
+}));
+

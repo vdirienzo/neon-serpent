@@ -4,11 +4,21 @@ import assert from 'node:assert/strict';
 
 globalThis.localStorage = {
   _: {},
-  setItem(k, v) { this._[k] = v; },
-  getItem(k) { return this._[k] || null; },
-  removeItem(k) { delete this._[k]; },
-  key(i) { return Object.keys(this._)[i] || null; },
-  get length() { return Object.keys(this._).length; }
+  setItem(k, v) {
+    this._[k] = v;
+  },
+  getItem(k) {
+    return this._[k] || null;
+  },
+  removeItem(k) {
+    delete this._[k];
+  },
+  key(i) {
+    return Object.keys(this._)[i] || null;
+  },
+  get length() {
+    return Object.keys(this._).length;
+  },
 };
 
 import { handleWin } from '../../../src/game/WinHandler.js';

@@ -12,12 +12,28 @@ function makeCtx() {
   const calls = { terrainBuild: 0, ambientBuild: 0, goalSet: 0, startSet: 0 };
   return {
     map: new HeightMap(),
-    terrainMesh: { build: () => { calls.terrainBuild++; } },
+    terrainMesh: {
+      build: () => {
+        calls.terrainBuild++;
+      },
+    },
     water: null,
-    ambient:   { build: () => { calls.ambientBuild++; } },
-    goal:      { set:   () => { calls.goalSet++; } },
-    startMarker: { set: () => { calls.startSet++; } },
-    _calls: calls
+    ambient: {
+      build: () => {
+        calls.ambientBuild++;
+      },
+    },
+    goal: {
+      set: () => {
+        calls.goalSet++;
+      },
+    },
+    startMarker: {
+      set: () => {
+        calls.startSet++;
+      },
+    },
+    _calls: calls,
   };
 }
 
@@ -93,8 +109,10 @@ test('lastGoal is populated from the map goal cell', () => {
   const ctx = makeCtx();
   const lm = new LevelManager(ctx);
   lm.load(1);
-  assert.ok(ctx.map.isGoal(ctx.lastGoal.gx, ctx.lastGoal.gz),
-    `lastGoal (${ctx.lastGoal.gx},${ctx.lastGoal.gz}) should be a goal cell`);
+  assert.ok(
+    ctx.map.isGoal(ctx.lastGoal.gx, ctx.lastGoal.gz),
+    `lastGoal (${ctx.lastGoal.gx},${ctx.lastGoal.gz}) should be a goal cell`
+  );
 });
 
 test('palette selection cycles through LEVEL_PALETTES for n=1..10', () => {

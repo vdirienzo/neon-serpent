@@ -4,9 +4,18 @@ import assert from 'node:assert/strict';
 import { HeightMap } from '../../src/world/HeightMap.js';
 import { buildTerrainIsland, buildBridge } from '../../src/world/IslandBuilder.js';
 import {
-  buildLevel1, buildLevel2, buildLevel3, buildLevel4, buildLevel5,
-  buildLevel6, buildLevel7, buildLevel8, buildLevel9, buildLevel10,
-  buildDailyLevel, buildLevel
+  buildLevel1,
+  buildLevel2,
+  buildLevel3,
+  buildLevel4,
+  buildLevel5,
+  buildLevel6,
+  buildLevel7,
+  buildLevel8,
+  buildLevel9,
+  buildLevel10,
+  buildDailyLevel,
+  buildLevel,
 } from '../../src/world/LevelBuilder.js';
 import { Y_WATER } from '../../src/config.js';
 
@@ -101,7 +110,8 @@ test('buildLevel8 (PILAR) is 3D with 2 stacked platforms', () => {
   assert.ok(b.maxY >= 3.0, `expected high upper platform, got maxY ${b.maxY}`);
   assert.ok(b.minY <= 0.5, `expected low base, got minY ${b.minY}`);
   // Should have cells in both low and high Y ranges
-  let lowCount = 0, highCount = 0;
+  let lowCount = 0,
+    highCount = 0;
   for (let x = 0; x < 32; x++) {
     for (let z = 0; z < 32; z++) {
       const c = m.cells[x][z];

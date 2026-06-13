@@ -15,11 +15,22 @@ function simulatePopulate(freeCells, rng) {
     return free.splice(idx, 1)[0];
   };
   const placed = [];
-  for (let i = 0; i < 6; i++) { const c = pick(); if (c) placed.push({ type: 'orb', gx: c.gx, gz: c.gz }); }
-  for (let i = 0; i < 3; i++) { const c = pick(); if (c) placed.push({ type: 'gem', gx: c.gx, gz: c.gz }); }
-  for (let i = 0; i < 2; i++) { const c = pick(); if (c) placed.push({ type: 'crystal', gx: c.gx, gz: c.gz }); }
-  const slowC = pick(); if (slowC) placed.push({ type: 'slow', gx: slowC.gx, gz: slowC.gz });
-  const diceC = pick(); if (diceC) placed.push({ type: 'dice', gx: diceC.gx, gz: diceC.gz });
+  for (let i = 0; i < 6; i++) {
+    const c = pick();
+    if (c) placed.push({ type: 'orb', gx: c.gx, gz: c.gz });
+  }
+  for (let i = 0; i < 3; i++) {
+    const c = pick();
+    if (c) placed.push({ type: 'gem', gx: c.gx, gz: c.gz });
+  }
+  for (let i = 0; i < 2; i++) {
+    const c = pick();
+    if (c) placed.push({ type: 'crystal', gx: c.gx, gz: c.gz });
+  }
+  const slowC = pick();
+  if (slowC) placed.push({ type: 'slow', gx: slowC.gx, gz: slowC.gz });
+  const diceC = pick();
+  if (diceC) placed.push({ type: 'dice', gx: diceC.gx, gz: diceC.gz });
   return placed;
 }
 
@@ -56,7 +67,10 @@ test('populate works even when free cells are exactly 13', () => {
 });
 
 test('populate returns fewer entries when free cells are scarce', () => {
-  const freeCells = [{ gx: 0, gz: 0 }, { gx: 1, gz: 1 }];
+  const freeCells = [
+    { gx: 0, gz: 0 },
+    { gx: 1, gz: 1 },
+  ];
   const placed = simulatePopulate(freeCells, Math.random);
   assert.ok(placed.length <= 2, 'should not exceed available cells');
   const seen = new Set();
@@ -71,7 +85,10 @@ test('populate leaves no duplicate cells with deterministic seeded rng', () => {
   const freeCells = [];
   for (let i = 0; i < 50; i++) freeCells.push({ gx: i, gz: i });
   let s = 42;
-  const rng = () => { s = (s * 1103515245 + 12345) % 2147483648; return s / 2147483648; };
+  const rng = () => {
+    s = (s * 1103515245 + 12345) % 2147483648;
+    return s / 2147483648;
+  };
   const placed = simulatePopulate(freeCells, rng);
   const seen = new Set();
   for (const p of placed) seen.add(p.gx + ',' + p.gz);

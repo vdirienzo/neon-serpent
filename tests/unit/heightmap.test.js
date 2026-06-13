@@ -28,9 +28,10 @@ test('setGoal snaps to nearest solid if cell is void', () => {
   m.setGoal(5, 5);
   // The nearest solid (4,4) due to ring scan including diagonals
   let found = false;
-  for (let x = 0; x < 32 && !found; x++) for (let z = 0; z < 32 && !found; z++) {
-    if (m.isGoal(x, z)) found = true;
-  }
+  for (let x = 0; x < 32 && !found; x++)
+    for (let z = 0; z < 32 && !found; z++) {
+      if (m.isGoal(x, z)) found = true;
+    }
   assert.ok(found, 'expected goal to be placed on some solid cell');
 });
 
@@ -118,7 +119,7 @@ test('computeLethality: idempotent — second call yields identical results', ()
   const m = new HeightMap();
   m.setCell(15, 15, 0, true);
   m.setCell(16, 15, 3.0, true); // climb pair
-  m.setCell(5, 5, 0, false);    // a void cell
+  m.setCell(5, 5, 0, false); // a void cell
   m.computeLethality();
   const snap = [];
   for (let x = 0; x < 32; x++) {

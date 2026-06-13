@@ -11,16 +11,20 @@ import { STATE } from '../../../src/config.js';
 const _el = {
   _classes: new Set(),
   classList: {
-    add: (c) => { _el._classes.add(c); },
-    remove: (...cs) => { cs.forEach((c) => _el._classes.delete(c)); },
-    contains: (c) => _el._classes.has(c)
+    add: (c) => {
+      _el._classes.add(c);
+    },
+    remove: (...cs) => {
+      cs.forEach((c) => _el._classes.delete(c));
+    },
+    contains: (c) => _el._classes.has(c),
   },
   textContent: '',
-  offsetWidth: 0
+  offsetWidth: 0,
 };
 
 globalThis.document = {
-  getElementById: (id) => (id === 'countdown' ? _el : null)
+  getElementById: (id) => (id === 'countdown' ? _el : null),
 };
 
 const { startCountdown, cancelCountdown, getGoStartedAt } =
@@ -90,7 +94,9 @@ test('startCountdown without #countdown element calls onComplete immediately and
   const orig = globalThis.document.getElementById;
   globalThis.document = { getElementById: () => null };
   let called = false;
-  startCountdown(() => { called = true; });
+  startCountdown(() => {
+    called = true;
+  });
   assert.equal(called, true, 'onComplete should be invoked when element is missing');
   assert.equal(getState(), STATE.COUNTDOWN, 'state is set to COUNTDOWN before the element check');
   globalThis.document = { getElementById: orig };

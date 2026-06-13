@@ -7,11 +7,21 @@ import assert from 'node:assert/strict';
 const _store = new Map();
 globalThis.localStorage = {
   _: _store,
-  setItem(k, v) { _store.set(k, String(v)); },
-  getItem(k)    { return _store.has(k) ? _store.get(k) : null; },
-  removeItem(k) { _store.delete(k); },
-  key(i)        { return Array.from(_store.keys())[i] || null; },
-  get length()  { return _store.size; }
+  setItem(k, v) {
+    _store.set(k, String(v));
+  },
+  getItem(k) {
+    return _store.has(k) ? _store.get(k) : null;
+  },
+  removeItem(k) {
+    _store.delete(k);
+  },
+  key(i) {
+    return Array.from(_store.keys())[i] || null;
+  },
+  get length() {
+    return _store.size;
+  },
 };
 _store.clear();
 
@@ -41,17 +51,21 @@ test('recordScore updates hi and returns true only when new score is greater', (
 
 test('recordSector: out-of-range sectors are ignored; valid sectors track the max per slot', () => {
   const before = Scoring.getBestBySector().slice();
-  assert.equal(Scoring.recordSector(0, 9999),  false, 'sector 0 invalid');
-  assert.equal(Scoring.recordSector(6, 9999),  false, 'sector 6 invalid');
+  assert.equal(Scoring.recordSector(0, 9999), false, 'sector 0 invalid');
+  assert.equal(Scoring.recordSector(6, 9999), false, 'sector 6 invalid');
   assert.equal(Scoring.recordSector(-1, 9999), false, 'sector -1 invalid');
   const after = Scoring.getBestBySector();
   assert.deepEqual(after, before, 'invalid sectors must not mutate bestBySector');
 
   // Per-sector max behaviour.
   Scoring.recordSector(1, 100);
-  Scoring.recordSector(1, 50);   // not higher
-  Scoring.recordSector(1, 200);  // higher
-  assert.equal(Scoring.getBestBySector()[0], 200, 'sector 1 should hold the max of recorded values');
+  Scoring.recordSector(1, 50); // not higher
+  Scoring.recordSector(1, 200); // higher
+  assert.equal(
+    Scoring.getBestBySector()[0],
+    200,
+    'sector 1 should hold the max of recorded values'
+  );
 
   Scoring.recordSector(3, 75);
   assert.equal(Scoring.getBestBySector()[2], 75, 'sector 3 should be 75');
@@ -69,7 +83,10 @@ test('pushLeaderboard adds entries, sorts desc, caps at 10', () => {
   }
   // Find the first three scores; they should be >= 100.
   assert.ok(lb[0].score >= 200, `top score should be >= 200, got ${lb[0].score}`);
-  assert.ok(lb.length >= before + 3, `leaderboard should have grown by at least 3, was ${before} now ${lb.length}`);
+  assert.ok(
+    lb.length >= before + 3,
+    `leaderboard should have grown by at least 3, was ${before} now ${lb.length}`
+  );
   assert.ok(lb.length <= 10, 'leaderboard must not exceed 10 entries');
 });
 
@@ -77,7 +94,11 @@ test('pushLeaderboard ignores zero or negative scores', () => {
   const before = Scoring.getLeaderboard().length;
   Scoring.pushLeaderboard(0, 1);
   Scoring.pushLeaderboard(-10, 1);
-  assert.equal(Scoring.getLeaderboard().length, before, 'no entries should be added for 0/negative scores');
+  assert.equal(
+    Scoring.getLeaderboard().length,
+    before,
+    'no entries should be added for 0/negative scores'
+  );
 });
 
 test('multiple recordScore calls keep the maximum (monotonic hi)', () => {
