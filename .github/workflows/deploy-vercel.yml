@@ -13,12 +13,29 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  check:
+    name: Check Vercel secrets
+    runs-on: ubuntu-latest
+    outputs:
+      has-token: ${{ steps.check.outputs.has-token }}
+    steps:
+      - id: check
+        run: |
+          if [ -n "${{ secrets.VERCEL_TOKEN }}" ]; then
+            echo "has-token=true" >> $GITHUB_OUTPUT
+          else
+            echo "has-token=false" >> $GITHUB_OUTPUT
+            echo "::warning::VERCEL_TOKEN not configured. Skipping Vercel deploy."
+            echo "::warning::To enable auto-deploy, add VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID to repo secrets."
+            echo "::warning::See https://vercel.com/account/tokens to create a token."
+          fi
+
   deploy:
     name: Deploy to Vercel
+    needs: check
+    if: needs.check.outputs.has-token == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    # Only run if VERCEL_TOKEN secret is configured
-    if: ${{ secrets.VERCEL_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4
         with:
