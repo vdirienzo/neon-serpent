@@ -1,0 +1,41 @@
+/* fx/crt.css — full-screen scanline overlay + soft flicker.
+ * Local tokens keep tuning in one place; keyframes use var() so opacity
+ * stays in sync with the base value. */
+
+#crt {
+  --crt-line: 1px;
+  --crt-gap: 3px;
+  --crt-line-rgb: 0, 30, 60;
+  --crt-line-alpha: 0.5;
+  --crt-base-opacity: 0.9;
+  --crt-flicker-delta: 0.04;
+
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-fx);
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(var(--crt-line-rgb), var(--crt-line-alpha)) 0 var(--crt-line),
+    transparent var(--crt-line) calc(var(--crt-line) + var(--crt-gap))
+  );
+  opacity: var(--crt-base-opacity);
+  animation: crt-flicker 6s ease-in-out infinite;
+  will-change: opacity;
+}
+
+@keyframes crt-flicker {
+  0%,
+  100% {
+    opacity: var(--crt-base-opacity);
+  }
+  50% {
+    opacity: calc(var(--crt-base-opacity) - var(--crt-flicker-delta));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #crt {
+    animation: none;
+  }
+}

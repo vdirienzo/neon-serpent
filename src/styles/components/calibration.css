@@ -1,0 +1,256 @@
+/* components/calibration.css — right-side slide-in panel for visual calibration.
+ * SOTA 2026: container-type: inline-size + @container for panel-width-based
+ *   layout (sizing follows the panel itself, not the viewport).
+ * SOTA 2026: :has(input:focus) highlights the row whose input is focused
+ *   without needing JS to toggle a class.
+ * SOTA 2026: :focus-visible for keyboard-only focus rings.
+ * SOTA 2026: color-mix() derives translucent colors from the cyan seed. */
+
+#calibPanel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 320px;
+  z-index: var(--z-popup);
+  /* Establishes a containment context so @container queries resolve
+   * against the panel's inline-size (width), not the viewport. */
+  container-type: inline-size;
+  container-name: calib;
+  background: rgba(4, 6, 14, 0.92);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-left: 1px solid var(--color-cyan);
+  box-shadow: -4px 0 24px color-mix(in srgb, var(--color-cyan) 30%, transparent);
+  font-family: var(--font-mono);
+  color: var(--color-text);
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform 0.3s var(--ease-spring-soft);
+  padding: 16px 18px 18px;
+  pointer-events: none;
+}
+
+#calibPanel.show {
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.calib-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-cyan) 30%, transparent);
+}
+
+.calib-header h2 {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: var(--letter-spacing-wide);
+  color: var(--color-cyan);
+  text-shadow: 0 0 8px var(--color-cyan);
+  margin: 0;
+}
+
+.calib-close {
+  background: transparent;
+  border: 1px solid var(--color-magenta);
+  color: var(--color-magenta);
+  font-size: 14px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+  transition:
+    background 0.2s var(--ease-out),
+    box-shadow 0.2s var(--ease-out);
+}
+.calib-close:hover {
+  background: color-mix(in srgb, var(--color-magenta) 20%, transparent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--color-magenta) 30%, transparent);
+}
+.calib-close:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 2px;
+}
+
+.calib-body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.calib-section h3 {
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: var(--letter-spacing-wide);
+  color: var(--color-text-dim);
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+}
+
+.calib-row {
+  display: grid;
+  grid-template-columns: 90px 1fr 48px;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  padding: 2px 4px;
+  border-left: 2px solid transparent;
+  transition:
+    background-color 0.18s var(--ease-out),
+    border-color 0.18s var(--ease-out);
+}
+
+.calib-row.calib-rgb {
+  grid-template-columns: 90px 1fr 56px;
+  align-items: center;
+}
+
+/* SOTA 2026: :has() — when any input inside the row is focused (via
+ * :focus-visible or :focus), highlight the row without JS. Falls back
+ * gracefully if :has() is unavailable (no rule applies). */
+.calib-row:has(input:focus) {
+  background: color-mix(in srgb, var(--color-cyan) 8%, transparent);
+  border-left-color: var(--color-cyan);
+}
+
+.calib-rgb-channels {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4px;
+}
+
+.calib-rgb-ch {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1px;
+  min-width: 0;
+}
+
+.calib-rgb-lbl {
+  font-size: 8px;
+  color: var(--color-text-dim);
+  letter-spacing: 0.1em;
+  text-align: center;
+  font-weight: 700;
+}
+
+.calib-rgb-ch input[type='range'] {
+  width: 100%;
+  height: 4px;
+}
+
+.calib-rgb-val {
+  font-size: 10px;
+  color: var(--color-cyan);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 4px color-mix(in srgb, var(--color-cyan) 50%, transparent);
+}
+
+.calib-lbl {
+  font-size: 11px;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.calib-val {
+  font-size: 11px;
+  color: var(--color-cyan);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 4px color-mix(in srgb, var(--color-cyan) 50%, transparent);
+}
+
+.calib-row input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: color-mix(in srgb, var(--color-cyan) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-cyan) 40%, transparent);
+  outline: none;
+  cursor: pointer;
+  border-radius: 0;
+  margin: 0;
+}
+.calib-row input[type='range']:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 2px;
+}
+.calib-row input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: var(--color-cyan);
+  border: 2px solid var(--color-bg);
+  box-shadow: 0 0 8px var(--color-cyan);
+  cursor: pointer;
+  border-radius: 0;
+}
+.calib-row input[type='range']::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: var(--color-cyan);
+  border: 2px solid var(--color-bg);
+  box-shadow: 0 0 8px var(--color-cyan);
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.calib-reset {
+  width: 100%;
+  margin-top: 16px;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid var(--color-magenta);
+  color: var(--color-magenta);
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: var(--letter-spacing-wide);
+  cursor: pointer;
+  clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+  transition:
+    background 0.2s var(--ease-out),
+    box-shadow 0.2s var(--ease-out);
+}
+.calib-reset:hover {
+  background: color-mix(in srgb, var(--color-magenta) 20%, transparent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--color-magenta) 30%, transparent);
+}
+.calib-reset:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 2px;
+}
+
+/* Viewport-based media query drives the *width* of the panel itself
+ * (320px on desktop, 100% on small viewports). Width is inherently
+ * viewport-driven here, so a media query is the right primitive. */
+@media (max-width: 600px) {
+  #calibPanel {
+    width: 100%;
+  }
+}
+
+/* SOTA 2026: @container — once the panel is narrow (true component
+ * width, not viewport width), tighten the row grid and padding. This
+ * triggers on mobile phones (panel = 100% of <480px viewport) and on
+ * any other scenario where the panel itself is constrained. */
+@container calib (max-width: 480px) {
+  #calibPanel {
+    padding: 12px 14px 14px;
+  }
+  .calib-row {
+    grid-template-columns: 76px 1fr 44px;
+  }
+}

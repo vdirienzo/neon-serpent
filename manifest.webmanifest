@@ -1,0 +1,28 @@
+{
+  "name": "NEØN SERPENT",
+  "short_name": "NEØN SERP",
+  "description": "Neon snake game with 3D levels",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "theme_color": "#04060e",
+  "background_color": "#04060e",
+  "lang": "es",
+  "dir": "ltr",
+  "categories": ["games", "arcade"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D'http%3A//www.w3.org/2000/svg'%20viewBox%3D'0%200%20512%20512'%3E%3Crect%20width%3D'512'%20height%3D'512'%20fill%3D'%2304060e'/%3E%3Cpath%20d%3D'M128%20256%20C128%20160%20256%20160%20256%20256%20S384%20352%20384%20256'%20stroke%3D'%2300f6ff'%20stroke-width%3D'36'%20fill%3D'none'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'/%3E%3Ccircle%20cx%3D'128'%20cy%3D'256'%20r%3D'22'%20fill%3D'%2300f6ff'/%3E%3Ccircle%20cx%3D'384'%20cy%3D'256'%20r%3D'22'%20fill%3D'%23ff00ff'/%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D'http%3A//www.w3.org/2000/svg'%20viewBox%3D'0%200%20512%20512'%3E%3Crect%20width%3D'512'%20height%3D'512'%20fill%3D'%2304060e'/%3E%3Cpath%20d%3D'M128%20256%20C128%20160%20256%20160%20256%20256%20S384%20352%20384%20256'%20stroke%3D'%2300f6ff'%20stroke-width%3D'36'%20fill%3D'none'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'/%3E%3Ccircle%20cx%3D'128'%20cy%3D'256'%20r%3D'22'%20fill%3D'%2300f6ff'/%3E%3Ccircle%20cx%3D'384'%20cy%3D'256'%20r%3D'22'%20fill%3D'%23ff00ff'/%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

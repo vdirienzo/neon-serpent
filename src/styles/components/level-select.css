@@ -1,0 +1,227 @@
+/* components/level-select.css — modal para seleccionar nivel (1-10).
+ * SOTA 2026: container-type: inline-size on the panel + @container query
+ *   so the grid reflows based on the panel's own width, not the viewport.
+ *   This keeps the modal responsive when embedded anywhere (centered,
+ *   fullscreen, in a constrained parent), not just on small screens.
+ * SOTA 2026: color-mix() derives translucent states from the cyan seed. */
+
+#levelSelectModal {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(2, 4, 12, 0.78);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  font-family: var(--font-mono);
+}
+
+#levelSelectModal.show {
+  display: flex;
+  animation: lvlFadeIn 0.2s var(--ease-out);
+}
+
+@keyframes lvlFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+#levelSelectModal .lvl-modal-panel {
+  position: relative;
+  width: min(640px, 92vw);
+  max-height: 86vh;
+  overflow-y: auto;
+  padding: 22px 24px 20px;
+  background: var(--color-panel);
+  border: 1px solid var(--color-cyan);
+  /* SOTA 2026: enable @container queries against this panel's width. */
+  container-type: inline-size;
+  container-name: lvl;
+  clip-path: polygon(
+    12px 0,
+    100% 0,
+    100% calc(100% - 12px),
+    calc(100% - 12px) 100%,
+    0 100%,
+    0 12px
+  );
+  box-shadow: 0 0 32px color-mix(in srgb, var(--color-cyan) 35%, transparent);
+  color: var(--color-text);
+}
+
+#levelSelectModal .lvl-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-cyan) 35%, transparent);
+}
+
+#levelSelectModal .lvl-modal-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 16px;
+  letter-spacing: var(--letter-spacing-wide);
+  color: var(--color-cyan);
+  text-shadow: 0 0 8px var(--color-cyan);
+  margin: 0;
+}
+
+#levelSelectModal .lvl-modal-sub {
+  font-size: 10px;
+  color: var(--color-text-dim);
+  letter-spacing: var(--letter-spacing-wide);
+  margin-top: 2px;
+}
+
+#levelSelectModal .lvl-modal-close {
+  background: transparent;
+  border: 1px solid var(--color-magenta);
+  color: var(--color-magenta);
+  font-size: 14px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+  transition:
+    background 0.2s var(--ease-out),
+    box-shadow 0.2s var(--ease-out);
+}
+#levelSelectModal .lvl-modal-close:hover {
+  background: color-mix(in srgb, var(--color-magenta) 20%, transparent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--color-magenta) 30%, transparent);
+}
+#levelSelectModal .lvl-modal-close:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 2px;
+}
+
+#levelSelectModal .lvl-modal-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+#levelSelectModal .level-cell {
+  --cell-color: var(--color-cyan);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 14px 6px 12px;
+  background: color-mix(in srgb, var(--color-cyan) 4%, transparent);
+  border: 1px solid var(--cell-color);
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  cursor: pointer;
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  transition:
+    background-color 0.18s var(--ease-out),
+    box-shadow 0.18s var(--ease-out),
+    transform 0.12s var(--ease-spring-mid);
+  min-height: 88px;
+}
+
+#levelSelectModal .level-cell:hover {
+  background: color-mix(in srgb, var(--color-cyan) 12%, transparent);
+  box-shadow:
+    0 0 14px var(--cell-color),
+    inset 0 0 12px color-mix(in srgb, var(--color-cyan) 15%, transparent);
+  transform: translateY(-1px);
+}
+
+#levelSelectModal .level-cell:active {
+  transform: translateY(1px);
+}
+
+#levelSelectModal .level-cell:focus-visible {
+  outline: 2px solid var(--cell-color);
+  outline-offset: 2px;
+}
+
+#levelSelectModal .level-cell.current {
+  background: color-mix(in srgb, var(--color-cyan) 18%, transparent);
+  box-shadow:
+    0 0 16px var(--cell-color),
+    inset 0 0 14px color-mix(in srgb, var(--color-cyan) 22%, transparent);
+  border-width: 2px;
+}
+
+#levelSelectModal .level-num {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 22px;
+  color: var(--cell-color);
+  text-shadow: 0 0 8px var(--cell-color);
+  line-height: 1;
+}
+
+#levelSelectModal .level-name {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--color-text-dim);
+  text-align: center;
+  text-transform: uppercase;
+  line-height: 1.1;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#levelSelectModal .level-tag {
+  position: absolute;
+  top: 3px;
+  right: 4px;
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--color-gold);
+  text-shadow: 0 0 4px var(--color-gold);
+}
+
+#levelSelectModal .lvl-modal-hint {
+  margin-top: 14px;
+  font-size: 10px;
+  color: var(--color-text-dim);
+  letter-spacing: var(--letter-spacing-wide);
+  text-align: center;
+  opacity: 0.75;
+}
+
+#levelSelectModal .lvl-modal-hint kbd {
+  display: inline-block;
+  padding: 1px 5px;
+  margin: 0 2px;
+  background: color-mix(in srgb, var(--color-cyan) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-cyan) 40%, transparent);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-cyan);
+}
+
+/* SOTA 2026: @container — when the panel itself is narrow (either
+ * because the viewport is small or it was embedded in a constrained
+ * parent), drop from a 5-column grid to a 2-column grid. This is
+ * component-local: the modal will reflow correctly no matter where
+ * it ends up. Replaces the previous viewport-based @media query. */
+@container lvl (max-width: 520px) {
+  #levelSelectModal .lvl-modal-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  #levelSelectModal .level-cell {
+    min-height: 72px;
+  }
+  #levelSelectModal .level-num {
+    font-size: 18px;
+  }
+}

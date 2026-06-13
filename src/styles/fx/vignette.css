@@ -1,0 +1,15 @@
+/* fx/vignette.css — radial darkening at the edges. */
+
+#vignette {
+  --vignette-rgb: 0, 0, 5;
+  --vignette-alpha: 0.62;
+  position: fixed;
+  inset: 0;
+  z-index: 39;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 52%,
+    rgba(var(--vignette-rgb), var(--vignette-alpha)) 100%
+  );
+}

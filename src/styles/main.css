@@ -1,0 +1,22 @@
+/* main.css — entry point that imports all modular stylesheets.
+ * Import order determines cascade precedence (later = higher). */
+
+@import url('tokens.css');
+@import url('reset.css');
+@import url('base.css');
+@import url('layout/loader.css');
+@import url('layout/title-screen.css');
+@import url('layout/hud.css');
+@import url('layout/modal.css');
+@import url('components/button.css');
+@import url('components/chip.css');
+@import url('components/panel.css');
+@import url('components/toast.css');
+@import url('components/popup.css');
+@import url('components/progress-bar.css');
+@import url('components/clipboard.css');
+@import url('components/calibration.css');
+@import url('components/level-select.css');
+@import url('fx/crt.css');
+@import url('fx/vignette.css');
+@import url('fx/flash.css');

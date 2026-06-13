@@ -1,0 +1,35 @@
+/* components/chip.css — small chip buttons used in HUD and settings. */
+
+.chipbtn {
+  font-family: var(--font-mono);
+  font-size: clamp(9px, 1vw, 11px);
+  color: var(--color-cyan);
+  padding: 6px 10px;
+  background: rgb(var(--color-cyan-rgb) / 0.06);
+  border: 1px solid rgb(var(--color-cyan-rgb) / 0.35);
+  clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+  letter-spacing: 0.18em;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.chipbtn:hover {
+  background: rgb(var(--color-cyan-rgb) / 0.16);
+  box-shadow: 0 0 8px rgb(var(--color-cyan-rgb) / 0.4);
+}
+
+.chipbtn:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 2px;
+}
+
+.chipbtn.off {
+  color: var(--color-text-dim);
+  border-color: rgb(122 138 163 / 0.35);
+}
+
+.chipbtn[aria-pressed='true'] {
+  background: rgb(var(--color-cyan-rgb) / 0.18);
+  border-color: var(--color-cyan);
+  box-shadow: 0 0 8px rgb(var(--color-cyan-rgb) / 0.4);
+}

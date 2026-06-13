@@ -1,0 +1,126 @@
+{
+  "_meta": {
+    "version": 1,
+    "name": "neon-serpent",
+    "locale": "en"
+  },
+  "hud": {
+    "score": "SCORE",
+    "level": "LEVEL",
+    "sector": "SECTOR",
+    "record": "RECORD",
+    "lives": "LIVES",
+    "sectorFallback": "PROTOCOL",
+    "sectorProgress": "{n}/{max}",
+    "sectorInfinity": "∞",
+    "modeStory": "MODE: STORY",
+    "modeTime": "MODE: TIME ATTACK",
+    "modeDaily": "MODE: DAILY SEED"
+  },
+  "calibration": {
+    "title": "CALIBRATION",
+    "closeLabel": "Close panel",
+    "reset": "↻ RESTORE DEFAULTS",
+    "sections": {
+      "lighting": "3D LIGHTING",
+      "toneMapping": "TONE MAPPING",
+      "fog": "FOG",
+      "overlays": "CSS OVERLAYS",
+      "render": "RENDER",
+      "entities": "ENTITIES"
+    },
+    "labels": {
+      "ambient": "Ambient",
+      "keyLight": "Key (cyan)",
+      "fillLight": "Fill (mag)",
+      "topLight": "Top",
+      "headLight": "Head light",
+      "exposure": "Exposure",
+      "fogDensity": "Density",
+      "color": "Color",
+      "crtOpacity": "CRT scanl.",
+      "crtLineAlpha": "CRT line α",
+      "vignetteAlpha": "Vignette",
+      "crtColor": "CRT color",
+      "vignetteColor": "Vignette color",
+      "pixelRatio": "Pixel ratio",
+      "snakeEmissive": "Snake emiss.",
+      "waterOpacity": "Water op."
+    }
+  },
+  "gameOver": {
+    "newRecord": "★ NEW RECORD ★",
+    "deathCauses": {
+      "wall": "DEATH BY: WALL IMPACT",
+      "void": "DEATH BY: FALL INTO THE VOID",
+      "climb": "DEATH BY: CLIFF",
+      "self": "DEATH BY: SELF COLLISION",
+      "time": "DEATH BY: TIME OUT"
+    }
+  },
+  "leaderboard": {
+    "empty": "— NO ENTRIES YET —",
+    "sectorTag": "S{sector}",
+    "sectorInfinityTag": "S∞"
+  },
+  "settings": {
+    "clearConfirm": "Delete all saved data? (record, settings, leaderboard)",
+    "audioOn": "AUDIO: ON",
+    "audioOff": "AUDIO: OFF",
+    "colorBlindNo": "COLORBLIND: OFF",
+    "colorBlindOn": "COLORBLIND: {mode}",
+    "reducedMotionOn": "REDUCED MOTION: ON",
+    "reducedMotionOff": "REDUCED MOTION: OFF",
+    "slowModeOn": "SLOW SPEED: ON",
+    "slowModeOff": "SLOW SPEED: OFF",
+    "colorToast": "COLOR: {mode}",
+    "motionReducedToast": "MOTION: REDUCED",
+    "motionNormalToast": "MOTION: NORMAL",
+    "speedSlowToast": "SPEED: 0.7x",
+    "speedNormalToast": "SPEED: 1.0x"
+  },
+  "levelSelect": {
+    "ariaLabel": "Level {n} {name}",
+    "current": "IN PLAY"
+  },
+  "share": {
+    "title": "🐍 NEØN SERPENT",
+    "score": "Score: {score}",
+    "sector": "Sector: S{sector} ({name})",
+    "newRecord": "★ NEW RECORD ★",
+    "footer": "— neon serpent v1.0",
+    "copied": "SCORE COPIED!",
+    "error": "COPY ERROR"
+  },
+  "boot": {
+    "linkFail": "LINK FAILURE — Error: {error}<br/>Check your connection and reload the page.",
+    "initFail": "INITIALIZATION FAILURE — The script did not finish loading.<br/>Try serving the file with a local HTTP server (don't open the file directly with file://). Three.js imports require HTTP."
+  },
+  "toast": {
+    "coreDetected": "⬡ DATA NUCLEUS DETECTED",
+    "coreLost": "NUCLEUS LOST",
+    "connected": "CONNECTION ESTABLISHED",
+    "timeUp": "TIME OUT",
+    "settingsSaved": "SETTINGS SAVED",
+    "sectorStarted": "SECTOR {n} STARTED",
+    "sectorCompleted": "SECTOR {n} COMPLETED +{points}",
+    "sectorJump": "SECTOR {n} — {name}",
+    "timeAttackStart": "⏱ TIME ATTACK — 60s",
+    "dailyStart": "📅 DAILY — {date}",
+    "gameOver": "Game over, score {score}",
+    "letsPlay": "Let's play"
+  },
+  "powerUp": {
+    "speedIcon": "⚡",
+    "slowIcon": "⏳",
+    "speedLabel": "SPEED",
+    "slowLabel": "SLOW-MO",
+    "duration": "{seconds}s",
+    "speedToast": "⚡ SPEED x2 FOR 6s",
+    "slowToast": "⏳ SLOW-MO 4s",
+    "diceToast": "🎲 DICE: LEVEL SKIP!"
+  },
+  "camera": {
+    "label": "CAMERA: {mode}"
+  }
+}

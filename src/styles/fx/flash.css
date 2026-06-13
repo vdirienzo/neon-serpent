@@ -1,0 +1,83 @@
+/* fx/flash.css — full-screen flash on eat / bonus / death. */
+
+#fx-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 42;
+  pointer-events: none;
+  background: var(--color-magenta);
+  opacity: 0;
+  mix-blend-mode: screen;
+}
+
+#fx-flash.boom {
+  animation: boom 0.5s ease-out both;
+}
+
+@keyframes boom {
+  0% {
+    opacity: 0.6;
+    background: #fff;
+  }
+  25% {
+    opacity: 0.35;
+    background: var(--color-magenta);
+  }
+  60% {
+    opacity: 0.18;
+    background: var(--color-cyan);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+body.glitch canvas {
+  animation: glitchShake 0.55s steps(2) both;
+}
+
+@keyframes glitchShake {
+  0% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-8px, 4px) skewX(2deg);
+    filter: hue-rotate(60deg) saturate(2);
+  }
+  20% {
+    transform: translate(7px, -3px) skewX(-3deg);
+  }
+  35% {
+    transform: translate(-5px, -5px);
+    filter: hue-rotate(-50deg);
+  }
+  50% {
+    transform: translate(6px, 3px) skewX(1.5deg);
+    filter: saturate(3);
+  }
+  70% {
+    transform: translate(-3px, 2px);
+  }
+  100% {
+    transform: translate(0, 0);
+    filter: none;
+  }
+}
+
+.lvl-pop {
+  animation: lvlPop 0.55s var(--ease-spring-hard) both;
+}
+
+@keyframes lvlPop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+    color: var(--color-gold);
+    text-shadow: 0 0 14px var(--color-gold);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

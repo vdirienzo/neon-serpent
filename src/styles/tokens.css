@@ -1,0 +1,104 @@
+/* tokens.css — design tokens as CSS custom properties. */
+
+:root {
+  /* ---------- Palette (sRGB hex seeds) ---------- */
+  --color-bg: #04060e;
+  --color-cyan: #00f6ff;
+  --color-magenta: #ff2bd6;
+  --color-gold: #ffc857;
+  --color-green: #39ff14;
+  --color-violet: #b026ff;
+  --color-text: #cfeaff;
+  --color-text-dim: #7a8aa3;
+
+  /* ---------- Translucent surfaces ---------- */
+  --color-panel: rgba(7, 11, 26, 0.78);
+  --color-panel-edge: rgba(0, 246, 255, 0.45);
+  --color-panel-edge-mag: rgba(255, 43, 214, 0.45);
+  --color-line: rgba(0, 246, 255, 0.35);
+
+  /* ---------- Legacy RGB triplets ---------- */
+  --color-cyan-rgb: 0 246 255;
+  --color-magenta-rgb: 255 43 214;
+  --color-gold-rgb: 255 200 87;
+  --color-green-rgb: 57 255 20;
+  --color-violet-rgb: 176 38 255;
+
+  /* ---------- Typography ---------- */
+  --font-display: 'Orbitron', system-ui, sans-serif;
+  --font-mono: 'Share Tech Mono', ui-monospace, monospace;
+  --font-size-base: clamp(15px, 1vw, 18px);
+  --letter-spacing-wide: 0.4em;
+  --letter-spacing-base: 0.04em;
+  --letter-spacing-narrow: 0.1em;
+
+  /* ---------- Spacing scale (4-pt base) ---------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 18px;
+  --space-5: 24px;
+  --space-6: 36px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* ---------- Motion ---------- */
+  --motion-fast: 0.12s;
+  --motion-base: 0.25s;
+  --motion-slow: 0.6s;
+  --ease-spring-soft: cubic-bezier(0.2, 1.4, 0.4, 1);
+  --ease-spring-mid: cubic-bezier(0.2, 1.6, 0.4, 1);
+  --ease-spring-hard: cubic-bezier(0.2, 1.8, 0.4, 1);
+  --ease-linear: linear;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+
+  /* ---------- Z-index scale ---------- */
+  --z-canvas: 0;
+  --z-hud: 10;
+  --z-popup: 20;
+  --z-modal: 30;
+  --z-fx: 40;
+  --z-loader: 50;
+
+  /* ---------- Misc ---------- */
+  --clip-size: 8px;
+}
+
+/* Color-blind overrides */
+body.cb-deuter {
+  --color-cyan-rgb: 255 212 0;
+  --color-magenta-rgb: 0 80 255;
+  --color-gold-rgb: 255 212 0;
+  --color-green-rgb: 255 212 0;
+  --color-violet-rgb: 0 80 255;
+  --color-cyan: #ffd400;
+  --color-magenta: #0050ff;
+  --color-gold: #ffd400;
+  --color-green: #ffd400;
+  --color-violet: #0050ff;
+}
+body.cb-protan {
+  --color-cyan-rgb: 0 212 255;
+  --color-magenta-rgb: 204 255 0;
+  --color-gold-rgb: 204 255 0;
+  --color-green-rgb: 204 255 0;
+  --color-violet-rgb: 204 136 0;
+  --color-cyan: #00d4ff;
+  --color-magenta: #ccff00;
+  --color-gold: #ccff00;
+  --color-green: #ccff00;
+  --color-violet: #cc8800;
+}
+body.cb-tritan {
+  --color-cyan-rgb: 255 128 0;
+  --color-magenta-rgb: 0 204 136;
+  --color-gold-rgb: 255 128 0;
+  --color-green-rgb: 255 128 0;
+  --color-violet-rgb: 0 204 136;
+  --color-cyan: #ff8000;
+  --color-magenta: #00cc88;
+  --color-gold: #ff8000;
+  --color-green: #ff8000;
+  --color-violet: #00cc88;
+}

@@ -1,0 +1,397 @@
+/* layout/hud.css — in-game heads-up display. */
+
+#hud {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-hud);
+  padding: 14px 18px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+  pointer-events: none;
+  font-family: var(--font-mono);
+  /* Establishes a containment context for child @container queries. */
+  container-type: inline-size;
+  container-name: hud;
+}
+
+#hud[hidden] {
+  display: none;
+}
+
+#hud .col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+#hud .col.c {
+  text-align: center;
+  align-items: center;
+}
+
+#hud .col.r {
+  text-align: right;
+  align-items: flex-end;
+}
+
+#hud .lbl {
+  font-size: clamp(9px, 1vw, 11px);
+  color: var(--color-text-dim);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+#hud .val {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(22px, 3.4vw, 42px);
+  line-height: 1;
+  letter-spacing: 0.05em;
+  transition: transform 0.18s var(--ease-spring-mid);
+  color: #eafdff;
+  text-shadow:
+    2px 0 0 color-mix(in srgb, var(--color-magenta) 35%, transparent),
+    -2px 0 0 color-mix(in srgb, var(--color-cyan) 35%, transparent);
+}
+
+#hud .val.s {
+  color: #eafdff;
+  text-shadow:
+    0 0 8px var(--color-cyan),
+    0 0 26px color-mix(in srgb, var(--color-cyan) 50%, transparent),
+    2px 0 0 color-mix(in srgb, var(--color-magenta) 35%, transparent),
+    -2px 0 0 color-mix(in srgb, var(--color-cyan) 35%, transparent);
+}
+
+#hud .val.m {
+  color: #eafdff;
+  text-shadow:
+    0 0 8px var(--color-magenta),
+    0 0 26px color-mix(in srgb, var(--color-magenta) 45%, transparent),
+    2px 0 0 color-mix(in srgb, var(--color-magenta) 35%, transparent),
+    -2px 0 0 color-mix(in srgb, var(--color-cyan) 35%, transparent);
+}
+
+#hud .val.bump {
+  transform: scale(1.22);
+  animation: bump 0.25s var(--ease-out);
+}
+
+@keyframes bump {
+  40% {
+    transform: scale(1.22);
+  }
+}
+
+#hud .lvlnum {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(16px, 2vw, 22px);
+  color: var(--color-cyan);
+  text-shadow: 0 0 8px var(--color-cyan);
+}
+
+#hud .lvlnum small {
+  font-size: 0.55em;
+  color: var(--color-text-dim);
+  letter-spacing: 0.3em;
+  margin-right: 6px;
+}
+
+.sector-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-bottom: 4px;
+  padding: 4px 10px;
+  border: 1px solid currentColor;
+  background: rgba(0, 0, 0, 0.3);
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  transition: color 0.4s var(--ease-out);
+}
+
+.sector-wrap .lbl {
+  font-size: clamp(8px, 0.9vw, 10px);
+  color: currentColor;
+  letter-spacing: var(--letter-spacing-wide);
+  opacity: 0.75;
+}
+
+.sectornum {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(13px, 1.6vw, 18px);
+  color: currentColor;
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 10px currentColor;
+}
+
+.sectorname {
+  font-size: clamp(8px, 0.9vw, 10px);
+  color: currentColor;
+  letter-spacing: 0.35em;
+  opacity: 0.6;
+}
+
+#lvlbar {
+  display: flex;
+  gap: 3px;
+  margin-top: 4px;
+}
+
+#lvlbar i {
+  display: block;
+  width: 10px;
+  height: 14px;
+  background: color-mix(in srgb, var(--color-cyan) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-cyan) 25%, transparent);
+  transform: skewX(-18deg);
+  transition: all var(--motion-base) var(--ease-out);
+}
+
+#lvlbar i.on {
+  background: var(--color-cyan);
+  box-shadow:
+    0 0 8px var(--color-cyan),
+    0 0 14px color-mix(in srgb, var(--color-cyan) 50%, transparent);
+  border-color: var(--color-cyan);
+}
+
+#bonuschip {
+  margin-top: 8px;
+  display: none;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(11px, 1.2vw, 13px);
+  color: var(--color-gold);
+  background: rgba(40, 28, 0, 0.45);
+  border: 1px solid color-mix(in srgb, var(--color-gold) 50%, transparent);
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  letter-spacing: 0.18em;
+  text-shadow:
+    0 0 10px var(--color-gold),
+    0 0 30px color-mix(in srgb, var(--color-gold) 50%, transparent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--color-gold) 30%, transparent);
+  animation: chipPulse 1s ease-in-out infinite;
+}
+
+#bonuschip.show {
+  display: inline-flex;
+}
+
+#bonuschip.flash {
+  animation: bf 0.35s steps(2) infinite;
+}
+
+@keyframes chipPulse {
+  50% {
+    box-shadow: 0 0 22px color-mix(in srgb, var(--color-gold) 55%, transparent);
+  }
+}
+
+@keyframes bf {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.15;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Power-up chip (HUD top-right) */
+#powerupchip {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 16;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  min-width: 140px;
+  height: 36px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(11px, 1.2vw, 13px);
+  letter-spacing: 0.18em;
+  background: rgba(0, 0, 0, 0.45);
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  text-shadow: 0 0 10px currentColor;
+  overflow: hidden;
+  pointer-events: none;
+  transform: translateX(160%);
+  opacity: 0;
+  transition:
+    transform 0.35s var(--ease-spring-soft),
+    opacity var(--motion-base) var(--ease-out);
+}
+
+#powerupchip.show {
+  display: flex;
+  transform: translateX(0);
+  opacity: 1;
+}
+
+#powerupchip.hide {
+  transform: translateX(160%);
+  opacity: 0;
+}
+
+#powerupchip .ic {
+  font-size: 14px;
+  line-height: 1;
+  filter: drop-shadow(0 0 4px currentColor);
+}
+
+#powerupchip .lb {
+  opacity: 0.85;
+}
+
+#powerupchip .tm {
+  font-variant-numeric: tabular-nums;
+  margin-left: auto;
+}
+
+#powerupchip .bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: currentColor;
+  box-shadow: 0 0 6px currentColor;
+  transform-origin: left center;
+  transform: scaleX(1);
+  transition: transform 0.08s var(--ease-linear);
+}
+
+#powerupchip.speed {
+  color: var(--color-green);
+  border: 1px solid var(--color-green);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--color-green) 35%, transparent);
+}
+
+#powerupchip.slow {
+  color: var(--color-violet);
+  border: 1px solid var(--color-violet);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--color-violet) 35%, transparent);
+}
+
+#hud-br {
+  position: fixed;
+  right: 14px;
+  bottom: 12px;
+  z-index: var(--z-hud);
+  display: flex;
+  gap: 6px;
+  pointer-events: auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  max-width: 60vw;
+}
+
+#hud-br[hidden] {
+  display: none;
+}
+
+.mode-indicator {
+  font-family: var(--font-mono);
+  font-size: clamp(9px, 1vw, 11px);
+  color: var(--color-cyan);
+  letter-spacing: 0.35em;
+  margin-top: 2px;
+  opacity: 0.75;
+  text-shadow: 0 0 4px color-mix(in srgb, var(--color-cyan) 50%, transparent);
+}
+
+.mode-indicator #timeAttackRemaining {
+  margin-left: 8px;
+  color: var(--color-gold);
+  opacity: 0.9;
+}
+
+.mode-indicator #timeAttackRemaining:empty {
+  display: none;
+}
+
+/* Combo badge (under the score) */
+.combo-badge {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: baseline;
+  gap: 2px;
+  margin-top: 4px;
+  padding: 3px 9px 3px 7px;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(11px, 1.1vw, 14px);
+  letter-spacing: 0.12em;
+  color: var(--color-gold);
+  background: rgba(40, 28, 0, 0.55);
+  border: 1px solid color-mix(in srgb, var(--color-gold) 55%, transparent);
+  clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+  text-shadow:
+    0 0 6px var(--color-gold),
+    0 0 18px color-mix(in srgb, var(--color-gold) 50%, transparent);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--color-gold) 35%, transparent);
+  transition: transform 0.15s var(--ease-spring-mid);
+}
+.combo-badge[hidden] {
+  display: none;
+}
+.combo-badge.bump {
+  transform: scale(1.18);
+}
+.combo-badge .combo-x {
+  font-size: 0.8em;
+  opacity: 0.8;
+}
+.combo-badge.hot {
+  color: #ff6e3a;
+  border-color: #ff6e3a;
+  text-shadow:
+    0 0 6px #ff6e3a,
+    0 0 18px color-mix(in srgb, #ff6e3a 55%, transparent);
+}
+
+/* SOTA 2026: :has() — if the HUD ever contains a descendant flagged
+ * as audio-off (`.off` is the class the audio toggle uses in
+ * SettingsModal; the HUD does not currently contain it, so this rule
+ * is forward-compatible and a no-op today). When triggered it dims
+ * the HUD to telegraph muted state without any JS in the layout. */
+#hud:has(.off),
+#hud-br:has(.off) {
+  opacity: 0.5;
+  filter: saturate(0.6);
+  transition:
+    opacity var(--motion-base) var(--ease-out),
+    filter var(--motion-base) var(--ease-out);
+}
+
+/* SOTA 2026: @container — when the HUD is narrow (e.g. portrait
+ * phone), the center column wraps below the side columns via flex-wrap;
+ * we also tighten the largest clamp() values so values don't overflow. */
+@container hud (max-width: 480px) {
+  #hud {
+    padding: 10px 12px;
+    gap: 10px;
+  }
+  #hud .val {
+    font-size: clamp(18px, 7vw, 28px);
+  }
+  #hud .lvlnum {
+    font-size: clamp(13px, 4vw, 18px);
+  }
+}

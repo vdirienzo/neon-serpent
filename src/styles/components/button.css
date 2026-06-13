@@ -1,0 +1,111 @@
+/* components/button.css — neon clip-path buttons.
+ * SOTA 2026: :focus-visible retained (keyboard-only focus ring).
+ * SOTA 2026: color-mix() derives translucent shadows from color seeds
+ *   (cyan, magenta, gold) — drops the legacy `*-rgb` triplet lookups
+ *   for the most common cases while keeping the visual identical.
+ * SOTA 2026: prefers-reduced-motion handled both here and globally
+ *   in reset.css; the local rule is a defense-in-depth override. */
+
+.btn {
+  display: inline-block;
+  padding: 14px 28px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(14px, 1.6vw, 18px);
+  letter-spacing: 0.28em;
+  color: var(--color-bg);
+  background: linear-gradient(180deg, var(--color-cyan), #18b8ff);
+  border: 1px solid var(--color-cyan);
+  clip-path: polygon(
+    12px 0,
+    100% 0,
+    100% calc(100% - 12px),
+    calc(100% - 12px) 100%,
+    0 100%,
+    0 12px
+  );
+  text-transform: uppercase;
+  box-shadow:
+    0 0 14px color-mix(in srgb, var(--color-cyan) 60%, transparent),
+    inset 0 0 18px rgb(255 255 255 / 0.2);
+  transition:
+    transform var(--motion-fast) var(--ease-out),
+    box-shadow 0.2s var(--ease-out),
+    filter 0.2s var(--ease-out);
+  animation: btnpulse 1.6s ease-in-out infinite;
+  cursor: pointer;
+}
+
+.btn:hover {
+  filter: brightness(1.15);
+  box-shadow:
+    0 0 22px color-mix(in srgb, var(--color-cyan) 90%, transparent),
+    inset 0 0 22px rgb(255 255 255 / 0.3);
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+/* SOTA 2026: :focus-visible — keyboard-only focus ring, suppressed
+ * for mouse/touch. Outline offset keeps the ring clear of the
+ * button's own glow shadow. */
+.btn:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 4px;
+}
+
+.btn.mag {
+  background: linear-gradient(180deg, var(--color-magenta), #b81e9a);
+  border-color: var(--color-magenta);
+  box-shadow:
+    0 0 14px color-mix(in srgb, var(--color-magenta) 60%, transparent),
+    inset 0 0 18px rgb(255 255 255 / 0.2);
+}
+
+.btn.mag:hover {
+  box-shadow:
+    0 0 22px color-mix(in srgb, var(--color-magenta) 90%, transparent),
+    inset 0 0 22px rgb(255 255 255 / 0.3);
+}
+
+.btn.ghost {
+  background: transparent;
+  color: var(--color-cyan);
+  box-shadow: none;
+  border-color: var(--color-panel-edge);
+}
+
+.btn.ghost:hover {
+  background: color-mix(in srgb, var(--color-cyan) 8%, transparent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--color-cyan) 40%, transparent);
+}
+
+.btn.gold {
+  background: linear-gradient(180deg, var(--color-gold), #d49a1f);
+  border-color: var(--color-gold);
+  box-shadow:
+    0 0 14px color-mix(in srgb, var(--color-gold) 60%, transparent),
+    inset 0 0 18px rgb(255 255 255 / 0.2);
+  color: #1a0f00;
+}
+
+@keyframes btnpulse {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.18);
+  }
+}
+
+/* Defense-in-depth: also disable the pulse animation if the user has
+ * prefers-reduced-motion set. The global rule in reset.css already
+ * reduces all animations to .001ms; this is an explicit no-op for
+ * the pulse which is purely decorative. */
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    animation: none;
+  }
+}

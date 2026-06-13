@@ -1,0 +1,33 @@
+/* components/popup.css — anchored world-projected popup numbers. */
+
+#popups {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-popup);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.popup {
+  position: absolute;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(14px, 1.8vw, 22px);
+  letter-spacing: 0.1em;
+  transform: translate(-50%, -50%);
+  text-shadow:
+    0 0 10px currentColor,
+    0 0 18px rgb(0 0 0 / 0.5);
+  white-space: nowrap;
+  will-change: transform, opacity;
+}
+
+.popup.gold {
+  color: var(--color-gold);
+}
+.popup.cyan {
+  color: var(--color-cyan);
+}
+.popup.mag {
+  color: var(--color-magenta);
+}

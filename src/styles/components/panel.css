@@ -1,0 +1,40 @@
+/* components/panel.css — translucent clip-path panel used inside modals. */
+
+.panel {
+  position: relative;
+  background: var(--color-panel);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--color-panel-edge);
+  clip-path: polygon(
+    14px 0,
+    100% 0,
+    100% calc(100% - 14px),
+    calc(100% - 14px) 100%,
+    0 100%,
+    0 14px
+  );
+  padding: 18px 22px;
+}
+
+.panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgb(var(--color-cyan-rgb) / 0.06),
+    transparent 30%,
+    transparent 70%,
+    rgb(var(--color-magenta-rgb) / 0.06)
+  );
+}
+
+.panel.mag {
+  border-color: var(--color-panel-edge-mag);
+}
+
+.panel.gold {
+  border-color: rgb(var(--color-gold-rgb) / 0.55);
+}

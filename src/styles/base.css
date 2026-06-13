@@ -1,0 +1,104 @@
+/* base.css — root, body, scroll, sr-only utility. */
+
+:where(html, body) {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-base);
+  letter-spacing: var(--letter-spacing-base);
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;
+  overscroll-behavior: none;
+  cursor: crosshair;
+}
+
+canvas#cv {
+  display: block;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-canvas);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip {
+  position: fixed;
+  top: -100px;
+  left: 8px;
+  z-index: 1000;
+  padding: 8px 16px;
+  background: var(--color-cyan);
+  color: var(--color-bg);
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 1px solid var(--color-cyan);
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  transition: top var(--motion-base) var(--ease-out);
+}
+.skip:focus-visible {
+  top: 8px;
+}
+
+.nojs {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  text-align: center;
+  font-family: var(--font-mono);
+}
+.nojs h1 {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 3vw, 28px);
+  color: var(--color-cyan);
+  text-shadow: 0 0 12px var(--color-cyan);
+  letter-spacing: 0.2em;
+}
+.nojs p {
+  color: var(--color-text-dim);
+  font-size: 14px;
+  max-width: 480px;
+  line-height: 1.6;
+}
+
+body.rm #fx-flash {
+  animation: none !important;
+}
+body.rm .countdown-overlay.show {
+  animation: none !important;
+}
+body.rm #crt {
+  animation: none;
+}
+body.rm .btn {
+  animation: none;
+}
+body.rm #scanRing {
+  display: none;
+}
