@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-export default defineConfig(({ mode }) => ({
+export default defineConfig(({ mode }: { mode: string }) => ({
   root: '.',
   publicDir: 'public',
   base: mode === 'production' ? (process.env.VITE_BASE || './') : './',
@@ -43,21 +43,16 @@ export default defineConfig(({ mode }) => ({
     sourcemap: true,
     outDir: 'dist',
     assetsDir: 'assets',
-    minify: 'esbuild',
     cssCodeSplit: true,
     reportCompressedSize: false,
     chunkSizeWarningLimit: 1024,
     rollupOptions: {
-      output: {
-        manualChunks: {
-          three: ['three'],
-        },
-      },
-    },
+      external: (id: string) => id === 'three' || id.startsWith('three/')
+    }
   },
 
   optimizeDeps: {
-    include: ['three'],
+    exclude: ['three']
   },
 
   test: {
