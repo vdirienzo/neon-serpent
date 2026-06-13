@@ -9,14 +9,16 @@
     <meta name="theme-color" content="#04060e" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://vdirienzo.github.io; connect-src 'self' https://unpkg.com; worker-src 'self' blob:; manifest-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
+      content="default-src 'self'; script-src 'self' https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://unpkg.com; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests"
     />
     <meta
       http-equiv="Permissions-Policy"
       content="camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=(), interest-cohort=()"
     />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <link rel="manifest" href="manifest.webmanifest" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <link rel="manifest" href="/neon-serpent/assets/manifest-DbCtx3O7.webmanifest" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -38,7 +40,20 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap"
     />
-    <link rel="stylesheet" href="src/styles/main.css" />
+    <script
+      type="importmap"
+      integrity="sha384-12YogFBvdVetjPVfxidCU7NzjtjvSQnNeVzUAtopFVGtoco6uyZfxHwbAU1E6nB9"
+      crossorigin="anonymous"
+    >
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.149.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.149.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script type="module" crossorigin src="/neon-serpent/assets/index-BoE_mpEu.js"></script>
+    <link rel="stylesheet" crossorigin href="/neon-serpent/assets/index-BvDPhErO.css">
   </head>
   <body>
     <a class="skip" href="#game">Saltar al tablero</a>
@@ -311,19 +326,7 @@
 
     <div id="sr-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
 
-    <script
-      type="importmap"
-      integrity="sha384-12YogFBvdVetjPVfxidCU7NzjtjvSQnNeVzUAtopFVGtoco6uyZfxHwbAU1E6nB9"
-      crossorigin="anonymous"
-    >
-      {
-        "imports": {
-          "three": "https://unpkg.com/three@0.149.0/build/three.module.js",
-          "three/addons/": "https://unpkg.com/three@0.149.0/examples/jsm/"
-        }
-      }
-    </script>
 
-    <script type="module" src="src/main.js"></script>
+
   </body>
 </html>

@@ -1,0 +1,9 @@
+Contact: mailto:security@neon-serpent.local
+Expires: 2027-12-31T23:59:59z
+Preferred-Languages: en, es
+Canonical: https://vdirienzo.github.io/neon-serpent/.well-known/security.txt
+Policy: https://github.com/vdirienzo/neon-serpent/blob/main/SECURITY.md
+Hiring: https://github.com/vdirienzo/neon-serpent/blob/main/.github/CONTRIBUTING.md
+
+# Security acknowledgements
+Acknowledgments: https://github.com/vdirienzo/neon-serpent/security/advisories
