@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="es" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#04060e" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://unpkg.com; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests"
+    />
+    <meta
+      http-equiv="Permissions-Policy"
+      content="camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=(), interest-cohort=()"
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <link rel="manifest" href="/neon-serpent/assets/manifest-DbCtx3O7.webmanifest" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="NEØN SERP" />
+    <meta name="application-name" content="NEØN SERP" />
+    <meta
+      name="description"
+      content="NEØN SERPENT — serpiente 3D en el navegador con WebGL2, estéticas neón, audio procedural y modos de juego: Historia, Time Attack y Daily Seed."
+    />
+    <title>NEØN SERPENT</title>
+
+    <link
+      rel="icon"
+      href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>&#x1F40D;</text></svg>"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap"
+    />
+    <script
+      type="importmap"
+      integrity="sha384-12YogFBvdVetjPVfxidCU7NzjtjvSQnNeVzUAtopFVGtoco6uyZfxHwbAU1E6nB9"
+      crossorigin="anonymous"
+    >
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.149.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.149.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script type="module" crossorigin src="/neon-serpent/assets/index-BoE_mpEu.js"></script>
+    <link rel="stylesheet" crossorigin href="/neon-serpent/assets/index-BvDPhErO.css">
+  </head>
+  <body>
+    <a class="skip" href="#game">Saltar al tablero</a>
+
+    <noscript>
+      <div class="nojs">
+        <h1>NEØN SERPENT requiere JavaScript habilitado.</h1>
+        <p>Activá JavaScript en tu navegador y recargá la página para jugar.</p>
+      </div>
+    </noscript>
+
+    <main id="game" aria-label="Tablero del juego">
+      <canvas id="cv" aria-label="Tablero del juego"
+        >NEØN SERPENT requiere un navegador con WebGL2 habilitado.</canvas
+      >
+
+      <div id="countdown" class="countdown-overlay" aria-hidden="true"></div>
+      <div id="vignette" aria-hidden="true"></div>
+      <div id="crt" aria-hidden="true"></div>
+      <div id="fx-flash" aria-hidden="true"></div>
+
+      <aside
+        id="calibPanel"
+        role="region"
+        aria-label="Panel de calibración de iluminación"
+        aria-hidden="true"
+      ></aside>
+
+      <div id="hud" hidden>
+        <div class="col" aria-label="Puntaje">
+          <div class="lbl">PUNTAJE</div>
+          <div class="val s" id="scoreVal" aria-live="polite">0</div>
+          <div id="comboBadge" class="combo-badge" aria-live="polite" aria-atomic="true" hidden>
+            <span class="combo-x">×</span><span id="comboVal">0</span>
+          </div>
+        </div>
+        <div class="col c" aria-label="Sector, nivel y modo">
+          <div id="sectorWrap" class="sector-wrap" aria-label="Sector actual">
+            <span class="lbl">SECTOR</span>
+            <span class="sectornum" id="sectorNum" aria-live="polite">1/5</span>
+            <span class="sectorname" id="sectorName">HUB</span>
+          </div>
+          <div class="lvlnum">
+            <small>NIVEL</small><span id="lvlNum" aria-live="polite">1</span>
+          </div>
+          <div
+            id="lvlbar"
+            role="meter"
+            aria-label="Barra de progreso de nivel"
+            aria-valuemin="1"
+            aria-valuemax="10"
+            aria-valuenow="1"
+          ></div>
+          <div id="bonuschip" aria-live="polite" aria-atomic="true">
+            <span aria-hidden="true">⬡</span> NÚCLEO <span id="bonusT">9.0</span>s
+          </div>
+          <div id="powerupchip" aria-live="polite" aria-atomic="true"></div>
+          <div id="modeIndicator" class="mode-indicator" aria-live="polite">
+            MODO: HISTORIA <span id="timeAttackRemaining"></span>
+          </div>
+        </div>
+        <div class="col r" aria-label="Récord y vidas">
+          <div class="lbl">VIDAS</div>
+          <div class="val m" id="livesVal" aria-live="polite" aria-atomic="true">♥♥♥</div>
+          <div class="lbl" style="margin-top: 8px">RÉCORD</div>
+          <div class="val m" id="hiVal" aria-live="polite">0</div>
+        </div>
+      </div>
+    </main>
+
+    <nav id="hud-br" aria-label="Controles del juego" hidden>
+      <button class="chipbtn" id="bAudio" type="button" aria-pressed="true">AUDIO: ON</button>
+      <button class="chipbtn" id="bCam" type="button" aria-pressed="false">CÁM: CINEMÁTICA</button>
+      <button
+        class="chipbtn"
+        id="bCalib"
+        type="button"
+        aria-pressed="false"
+        aria-controls="calibPanel"
+        aria-label="Calibrar imagen"
+      >
+        LUZ [L]
+      </button>
+      <button class="chipbtn" id="bPause" type="button" aria-pressed="false">PAUSA [P]</button>
+      <button class="chipbtn" id="bSettings" type="button" aria-pressed="false">
+        OPCIONES [O]
+      </button>
+    </nav>
+
+    <div id="touch-hint" class="touch-hint" aria-hidden="true">DESLIZÁ EN PANTALLA PARA MOVER</div>
+
+    <header id="title-screen" class="title-screen" role="region" aria-label="Menú principal" hidden>
+      <div class="kicker">PROTOCOLO SERPIENTE // SECTOR 7</div>
+      <h1 class="ttl">
+        <span>NEØN SERPENT</span>
+        <span class="glitch" aria-hidden="true">
+          <span class="g1">NEØN SERPENT</span>
+          <span class="g2">NEØN SERPENT</span>
+        </span>
+      </h1>
+      <div class="sub">NIVEL DE AMENAZA: MÁXIMO</div>
+      <div class="rec">RÉCORD LOCAL — <span id="recTitle" aria-live="polite">0</span></div>
+      <button class="btn start" id="bStart" type="button">INICIAR ENLACE</button>
+      <div class="start-row">
+        <button class="btn ghost" id="bTimeAttack" type="button">⏱ TIME ATTACK 60s</button>
+        <button class="btn ghost" id="bDaily" type="button">📅 DAILY SEED</button>
+        <button class="btn ghost" id="bLevelSelect" type="button">▣ SALTAR A SECTOR [J]</button>
+      </div>
+      <div class="hints">
+        <span class="k">WASD / FLECHAS</span> MOVER · <span class="k">P</span> PAUSA ·
+        <span class="k">C</span> CÁMARA · <span class="k">M</span> SONIDO<br />
+        <span class="k">ENTER / ESPACIO</span> INICIAR / REINICIAR ·
+        <span class="k">ESC</span> VOLVER AL INICIO<br />
+        <span class="k">J</span> SELECCIONAR SECTOR · <span class="k">1-9, 0</span> SALTAR DIRECTO ·
+        <span id="tHint" hidden>DESLIZÁ EN PANTALLA PARA MOVER</span>
+      </div>
+    </header>
+
+    <div id="loader" class="loader" role="status" aria-live="polite">
+      <div class="kicker">PROTOCOLO SERPIENTE // SECTOR 7</div>
+      <div class="title">NEØN SERPENT</div>
+      <div class="bar" aria-hidden="true"></div>
+      <div class="sub">INICIALIZANDO NÚCLEO GRÁFICO</div>
+      <div class="msg">
+        FALLO DE ENLACE — No se pudo inicializar el núcleo gráfico (las librerías no
+        respondieron).<br />
+        El archivo necesita conexión a internet la primera vez para cargar fuentes y el motor 3D.
+        Verificá tu conexión y recargá la página.
+      </div>
+    </div>
+
+    <div id="toasts" class="toasts" aria-live="polite" aria-atomic="true"></div>
+    <div id="popups" class="popups" aria-hidden="true"></div>
+
+    <div
+      id="pauseModal"
+      class="modal-wrap"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="pauseModalH"
+      hidden
+    >
+      <div class="panel modal">
+        <h2 class="h cyan" id="pauseModalH">SISTEMA EN PAUSA</h2>
+        <div class="sub">P / ENTER / ESPACIO PARA REANUDAR</div>
+        <div class="actions">
+          <button class="btn" id="bResume" type="button">REANUDAR</button>
+          <button class="btn ghost" id="bPauseTitle" type="button">VOLVER AL INICIO [ESC]</button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="overModal"
+      class="modal-wrap"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="overModalH"
+      hidden
+    >
+      <div class="panel mag modal">
+        <h2 class="h" id="overModalH">CONEXIÓN TERMINADA</h2>
+        <div class="badge" id="newRec" hidden>★ NUEVO RÉCORD ★</div>
+        <div class="sub">PUNTAJE FINAL</div>
+        <div class="big" id="finalScore" aria-live="polite">0</div>
+        <div class="death-cause" id="deathCause"></div>
+        <div class="rec">RÉCORD — <span id="recOver" aria-live="polite">0</span></div>
+        <div class="rec">
+          RÉCORD SECTOR <span id="bestOverSector">—</span> — <span id="bestOverVal">0</span>
+        </div>
+        <div class="actions">
+          <button class="btn" id="bRestart" type="button">REINICIAR [ENTER]</button>
+          <button class="btn ghost" id="bLeaderboard" type="button">VER RANKING</button>
+          <button class="btn ghost" id="bShare" type="button">📋 COMPARTIR</button>
+          <button class="btn ghost" id="bOverTitle" type="button">VOLVER AL INICIO [ESC]</button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="leaderboardModal"
+      class="modal-wrap"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="leaderboardH"
+      hidden
+    >
+      <div class="panel modal">
+        <h2 class="h cyan" id="leaderboardH">RANKING LOCAL</h2>
+        <div class="sub">TOP 10 — MEJORES PUNTAJES</div>
+        <div id="leaderboardList" class="lb-list" role="list"></div>
+        <div class="actions">
+          <button class="btn" id="bCloseLeaderboard" type="button">CERRAR [ESC]</button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="settingsModal"
+      class="modal-wrap"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="settingsH"
+      hidden
+    >
+      <div class="panel modal">
+        <h2 class="h cyan" id="settingsH">OPCIONES</h2>
+        <div class="sub">CONFIGURACIÓN DEL SISTEMA</div>
+        <div class="set-list">
+          <div class="set-row">
+            <span class="lbl">AUDIO</span>
+            <button class="chipbtn" id="bSetAudio" type="button" aria-pressed="true">
+              AUDIO: ON
+            </button>
+          </div>
+          <div class="set-row">
+            <span class="lbl">MODO DALTÓNICO</span>
+            <button class="chipbtn" id="bSetCB" type="button" aria-pressed="false">
+              DALTÓNICO: NO
+            </button>
+          </div>
+          <div class="set-row">
+            <span class="lbl">MOVIMIENTO REDUCIDO</span>
+            <button class="chipbtn" id="bSetRM" type="button" aria-pressed="false">
+              MOV. REDUCIDO: OFF
+            </button>
+          </div>
+          <div class="set-row">
+            <span class="lbl">MODO LENTO 0.7x</span>
+            <button class="chipbtn" id="bSetSlow" type="button" aria-pressed="false">
+              VEL. LENTA: OFF
+            </button>
+          </div>
+          <div class="set-row danger">
+            <button class="btn mag" id="bClearData" type="button" style="width: 100%">
+              ⚠ BORRAR DATOS
+            </button>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn" id="bSettingsSave" type="button">GUARDAR</button>
+          <button class="btn ghost" id="bSettingsClose" type="button">CERRAR [ESC]</button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="levelSelectModal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="lvlModalTitle"
+      aria-hidden="true"
+    >
+      <div class="lvl-modal-panel">
+        <div class="lvl-modal-header">
+          <div>
+            <h2 id="lvlModalTitle" class="lvl-modal-title">SALTAR A SECTOR</h2>
+            <div class="lvl-modal-sub">Elegí un nivel — el juego reinicia</div>
+          </div>
+          <button class="lvl-modal-close" id="lvlModalClose" type="button" aria-label="Cerrar">
+            ✕
+          </button>
+        </div>
+        <div class="lvl-modal-grid"></div>
+        <div class="lvl-modal-hint">
+          Atajos: <kbd>1</kbd>-<kbd>9</kbd> <kbd>0</kbd> para el 10 · <kbd>ESC</kbd> cerrar
+        </div>
+      </div>
+    </div>
+
+    <div id="sr-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+
+
+
+  </body>
+</html>
