@@ -1,0 +1,30 @@
+{
+  "name": "neon-serpent",
+  "displayName": "NEØN SERPENT",
+  "description": "3D snake game with synthwave aesthetics — Three.js, TypeScript, Vite",
+  "version": "2.0.0",
+  "private": true,
+  "folders": [
+    {
+      "name": "Root",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "npm.packageManager": "npm",
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "terminal.integrated.profiles.linux": {
+      "bash": {
+        "path": "/bin/bash"
+      }
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "dbaeumer.vscode-eslint",
+      "esbenp.prettier-vscode",
+      "EditorConfig.EditorConfig"
+    ]
+  }
+}

@@ -1,9 +1,28 @@
 {
   "name": "neon-serpent",
   "version": "2.0.0",
-  "description": "NEØN SERPENT — Refactored modular snake game (2026 SOTA)",
+  "description": "NEØN SERPENT — 3D snake game with synthwave aesthetics. Three.js, WebGL2, TypeScript, Vite.",
   "type": "module",
   "main": "src/main.js",
+  "types": "src/types/index.ts",
+  "exports": {
+    ".": "./src/main.js",
+    "./types": "./src/types/index.ts",
+    "./config": "./src/config.js",
+    "./engine/audio": "./src/audio/index.js",
+    "./engine/render": "./src/render/index.js",
+    "./game/levels": "./src/world/LevelBuilder.js"
+  },
+  "files": [
+    "src",
+    "dist",
+    "public",
+    "index.html",
+    "manifest.webmanifest",
+    "sw.js",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
@@ -12,28 +31,71 @@
     "test:vitest": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "lint": "eslint . --ext .ts,.js",
-    "format": "prettier --write \"src/**/*.{ts,js,css,json,md}\"",
-    "format:check": "prettier --check \"src/**/*.{ts,js,css,json,md}\"",
+    "test:ui": "vitest --ui",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"src/**/*.{ts,js,css,json,md}\" \"tests/**/*.{ts,js}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,js,css,json,md}\" \"tests/**/*.{ts,js}\"",
     "typecheck": "tsc --noEmit",
-    "serve": "python3 -m http.server 8765"
+    "validate": "npm run typecheck && npm run lint && npm run format:check && npm test",
+    "serve": "python3 -m http.server 8765",
+    "prepare": "husky"
   },
+  "keywords": [
+    "game",
+    "snake",
+    "3d",
+    "webgl",
+    "webgl2",
+    "three",
+    "threejs",
+    "synthwave",
+    "neon",
+    "typescript",
+    "vite",
+    "es-modules",
+    "pwa"
+  ],
+  "author": "vdirienzo",
+  "license": "MIT",
+  "homepage": "https://vdirienzo.github.io/neon-serpent/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vdirienzo/neon-serpent.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vdirienzo/neon-serpent/issues"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/vdirienzo"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 Firefox versions",
+    "last 2 Safari versions",
+    "last 2 Edge versions",
+    "not dead",
+    "not IE 11"
+  ],
   "devDependencies": {
     "@types/node": "^25.9.3",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
     "@vitest/coverage-v8": "^2.1.0",
+    "@vitest/ui": "^2.1.0",
     "eslint": "^9.0.0",
     "eslint-config-prettier": "^9.1.0",
     "happy-dom": "^15.0.0",
+    "husky": "^9.0.0",
     "prettier": "^3.3.0",
     "typescript": "^5.6.0",
     "typescript-eslint": "^8.61.0",
     "vite": "^5.4.0",
     "vitest": "^2.1.0"
-  },
-  "engines": {
-    "node": ">=18"
-  },
-  "license": "MIT"
+  }
 }

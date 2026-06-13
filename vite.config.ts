@@ -5,10 +5,10 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   root: '.',
   publicDir: 'public',
-  base: './',
+  base: mode === 'production' ? (process.env.VITE_BASE || './') : './',
 
   resolve: {
     alias: {
@@ -87,4 +87,5 @@ export default defineConfig({
       },
     },
   },
-});
+}));
+
