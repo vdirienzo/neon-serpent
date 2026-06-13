@@ -79,3 +79,6 @@ playwright/.cache/
 audit/logs/
 audit/sbom/sbom.json
 audit/.cache/
+
+# GitHub Pages artifact download
+github-pages/
