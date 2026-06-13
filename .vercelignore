@@ -1,0 +1,49 @@
+# Vercel ignore — files NOT to upload to deployment
+# See: https://vercel.com/docs/concepts/projects/ignoring-files
+
+# Source code — Vercel builds from source
+node_modules/
+src/
+tests/
+
+# Local config that should not affect Vercel
+.vscode/
+.idea/
+.github/
+.husky/
+audit/
+
+# Build artifacts
+dist/
+build/
+coverage/
+
+# Tests, docs, and dev-only files
+*.test.js
+*.test.ts
+*.spec.js
+*.spec.ts
+*.md
+!README.md
+.eslintcache
+*.log
+.DS_Store
+Thumbs.db
+*.bak
+*.tmp
+*.temp
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Env files
+.env
+.env.local
+.env.*.local
+
+# IDE
+*.swp
+*.swo
+*~
