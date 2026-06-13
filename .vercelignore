@@ -4,10 +4,15 @@
 # Vercel uses vercel.json for headers (not _headers)
 _headers
 
-# Source code — Vercel builds from source
+# node_modules is auto-installed by Vercel (we have installCommand)
 node_modules/
-src/
+
+# Tests (not needed at runtime)
 tests/
+*.test.js
+*.test.ts
+*.spec.js
+*.spec.ts
 
 # Local config that should not affect Vercel
 .vscode/
@@ -21,11 +26,7 @@ dist/
 build/
 coverage/
 
-# Tests, docs, and dev-only files
-*.test.js
-*.test.ts
-*.spec.js
-*.spec.ts
+# Docs and dev-only files
 *.md
 !README.md
 .eslintcache
