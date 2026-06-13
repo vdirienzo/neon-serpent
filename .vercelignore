@@ -1,6 +1,9 @@
 # Vercel ignore — files NOT to upload to deployment
 # See: https://vercel.com/docs/concepts/projects/ignoring-files
 
+# Vercel uses vercel.json for headers (not _headers)
+_headers
+
 # Source code — Vercel builds from source
 node_modules/
 src/
@@ -13,7 +16,7 @@ tests/
 .husky/
 audit/
 
-# Build artifacts
+# Build artifacts (locally only; Vercel builds fresh)
 dist/
 build/
 coverage/
@@ -47,3 +50,6 @@ Thumbs.db
 *.swp
 *.swo
 *~
+
+# Vercel deploy guide (not needed in production)
+/DEPLOY_VERCEL.md
