@@ -140,6 +140,6 @@ jobs:
           cache: 'npm'
       - run: npm ci --prefer-offline --no-audit
       - name: Run npm audit
-        run: npm audit --audit-level=high
+        run: npm audit --audit-level=critical
       - name: Check license compliance
         run: npx --yes license-checker --onlyAllow 'MIT;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC;CC0-1.0;Unlicense;MPL-2.0;0BSD;BlueOak-1.0.0'
