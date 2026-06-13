@@ -18,7 +18,7 @@ export function close() {
 function render() {
   const list = $('leaderboardList');
   if (!list) return;
-  list.innerHTML = '';
+  while (list.firstChild) list.removeChild(list.firstChild);
   const lb = getLeaderboard();
   if (!lb.length) {
     const empty = document.createElement('div');

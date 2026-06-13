@@ -206,21 +206,23 @@ import { createSettingsActions } from './game/SettingsActions.js';
 // ====================================================================
 // Boot error capture (lightweight mirror of Errors.js — Errors.js is loaded
 // below as a side-effect; this block keeps the legacy `window.__bootErr`
-// contract that the loader UI reads).
+// contract that the loader UI reads). Sanitized to avoid leaking internal
+// file paths/line numbers to any script with access to window.
 // ====================================================================
 window.__bootErr = null;
 window.addEventListener('error', (e) => {
-  window.__bootErr =
-    (e.message || 'err') +
-    ' @ ' +
-    (e.filename || '?') +
-    ':' +
-    (e.lineno || 0) +
-    ':' +
-    (e.colno || 0);
+  // Sanitize: only expose error type/category, not full path/line/col
+  // (Full details are still available via the structured Logger)
+  const category = e.error && e.error.name ? e.error.name : 'Error';
+  const msg = (e.message || 'err').slice(0, 120);
+  window.__bootErr = `${category}: ${msg}`;
 });
 window.addEventListener('unhandledrejection', (e) => {
-  window.__bootErr = 'REJ: ' + (e.reason && e.reason.message ? e.reason.message : e.reason);
+  // Sanitize: only expose reason type, not full message
+  const reason = e.reason;
+  let kind = 'rejection';
+  if (reason && reason.name) kind = reason.name;
+  window.__bootErr = `UnhandledRejection: ${kind}`;
 });
 
 // Side-effect: register the global error + unhandledrejection listeners from
@@ -322,10 +324,22 @@ function showLoaderFail() {
   loader.classList.add('fail');
   const msg = loader.querySelector('.msg');
   if (msg) {
+    while (msg.firstChild) msg.removeChild(msg.firstChild);
     if (window.__bootErr) {
-      msg.innerHTML = t('boot.linkFail', { error: window.__bootErr });
+      const text = t('boot.linkFail', { error: window.__bootErr });
+      // Split on <br/> for safe DOM construction (already-sanitized input)
+      const parts = text.split(/<br\s*\/?>/i);
+      parts.forEach((part, i) => {
+        if (i > 0) msg.appendChild(document.createElement('br'));
+        msg.appendChild(document.createTextNode(part));
+      });
     } else {
-      msg.innerHTML = t('boot.initFail');
+      const text = t('boot.initFail');
+      const parts = text.split(/<br\s*\/?>/i);
+      parts.forEach((part, i) => {
+        if (i > 0) msg.appendChild(document.createElement('br'));
+        msg.appendChild(document.createTextNode(part));
+      });
       msg.style.display = 'block';
     }
   }

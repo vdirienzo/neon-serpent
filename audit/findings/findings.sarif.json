@@ -1,0 +1,86 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "ns-security-audit",
+          "version": "1.0.0",
+          "informationUri": "https://github.com/vdirienzo/neon-serpent"
+        }
+      },
+      "results": [
+        {
+          "ruleId": "NS-2026-001",
+          "level": "none",
+          "message": { "text": "RESOLVED: Content Security Policy added to index.html" },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "index.html" },
+                "region": { "startLine": 8, "endLine": 8 }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "NS-2026-002",
+          "level": "none",
+          "message": { "text": "RESOLVED: SRI hash (sha384) added to importmap" },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "index.html" },
+                "region": { "startLine": 228, "endLine": 230 }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "NS-2026-003",
+          "level": "none",
+          "message": { "text": "RESOLVED: argparse pinned to 1.0.10 (MIT) via npm overrides" },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "package.json" },
+                "region": { "startLine": 35, "endLine": 37 }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "NS-2026-004",
+          "level": "none",
+          "message": { "text": "RESOLVED: Permissions-Policy meta tag added" }
+        },
+        {
+          "ruleId": "NS-2026-005",
+          "level": "none",
+          "message": { "text": "RESOLVED: Referrer-Policy meta tag added" }
+        },
+        {
+          "ruleId": "NS-2026-006",
+          "level": "none",
+          "message": { "text": "RESOLVED: __bootErr sanitized to remove paths/line numbers" }
+        },
+        {
+          "ruleId": "NS-2026-007",
+          "level": "none",
+          "message": { "text": "RESOLVED: innerHTML replaced with safe DOM API in 4 files" }
+        },
+        {
+          "ruleId": "NS-2026-008",
+          "level": "none",
+          "message": { "text": "RESOLVED: security-headers.yml CI workflow added" }
+        },
+        {
+          "ruleId": "NS-2026-012",
+          "level": "none",
+          "message": { "text": "RESOLVED: security.txt added to public/.well-known/" }
+        }
+      ]
+    }
+  ]
+}

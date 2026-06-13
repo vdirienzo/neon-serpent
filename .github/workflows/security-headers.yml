@@ -1,0 +1,145 @@
+name: Security Headers
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+  pull_request:
+    branches: [main, dev]
+    paths:
+      - 'index.html'
+  schedule:
+    - cron: '0 5 * * 1' # Weekly Monday 5am
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-headers
+  cancel-in-progress: true
+
+jobs:
+  verify-headers:
+    name: Verify Security Headers
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate index.html security meta tags
+        run: |
+          echo "=== Checking for Content Security Policy ==="
+          if grep -q 'http-equiv="Content-Security-Policy"' index.html; then
+            echo "✓ CSP meta tag found"
+          else
+            echo "✗ CSP meta tag MISSING"
+            exit 1
+          fi
+
+          echo ""
+          echo "=== Checking for Permissions-Policy ==="
+          if grep -q 'http-equiv="Permissions-Policy"' index.html; then
+            echo "✓ Permissions-Policy found"
+          else
+            echo "✗ Permissions-Policy MISSING"
+            exit 1
+          fi
+
+          echo ""
+          echo "=== Checking for Referrer-Policy ==="
+          if grep -q 'name="referrer"' index.html; then
+            echo "✓ Referrer-Policy found"
+          else
+            echo "✗ Referrer-Policy MISSING"
+            exit 1
+          fi
+
+          echo ""
+          echo "=== Checking for X-Content-Type-Options ==="
+          if grep -q 'X-Content-Type-Options' index.html; then
+            echo "✓ X-Content-Type-Options found"
+          else
+            echo "✗ X-Content-Type-Options MISSING"
+            exit 1
+          fi
+
+          echo ""
+          echo "=== Checking for X-Frame-Options ==="
+          if grep -q 'X-Frame-Options' index.html; then
+            echo "✓ X-Frame-Options found"
+          else
+            echo "✗ X-Frame-Options MISSING"
+            exit 1
+          fi
+
+          echo ""
+          echo "=== Checking Three.js SRI ==="
+          if grep -q 'integrity="sha384-' index.html; then
+            echo "✓ SRI hash present for Three.js"
+          else
+            echo "✗ SRI hash MISSING for Three.js"
+            exit 1
+          fi
+
+          echo ""
+          echo "=== Checking for inline event handlers ==="
+          INLINE=$(grep -cE 'on[a-z]+="[^"]+"' index.html || echo 0)
+          if [ "$INLINE" -gt 0 ]; then
+            # Filter out false positives: meta tags with on- attributes
+            REAL_INLINE=$(grep -nE '<[a-z]+[^>]*\son[a-z]+=' index.html | grep -v '<meta' | wc -l)
+            if [ "$REAL_INLINE" -gt 0 ]; then
+              echo "✗ Found $REAL_INLINE inline event handlers:"
+              grep -nE '<[a-z]+[^>]*\son[a-z]+=' index.html | grep -v '<meta' | head -5
+              exit 1
+            fi
+          fi
+          echo "✓ No inline event handlers"
+
+          echo ""
+          echo "=== Checking for javascript: URIs ==="
+          if grep -E 'href=["\x27]?javascript:' index.html; then
+            echo "✗ Found javascript: URI"
+            exit 1
+          else
+            echo "✓ No javascript: URIs"
+          fi
+
+          echo ""
+          echo "=== All security header checks passed ==="
+
+      - name: Validate SRI hash against live CDN
+        run: |
+          echo "=== Verifying SRI hash matches current Three.js release ==="
+          SRI=$(grep -oE 'integrity="sha384-[A-Za-z0-9+/=]+"' index.html | head -1 | sed 's/integrity="//;s/"//')
+          if [ -z "$SRI" ]; then
+            echo "✗ No SRI hash found"
+            exit 1
+          fi
+          ACTUAL=$(curl -sL "https://unpkg.com/three@0.149.0/build/three.module.js" | openssl dgst -sha384 -binary | openssl base64 -A)
+          EXPECTED=$(echo "$SRI" | sed 's/sha384-//')
+          if [ "$ACTUAL" = "$EXPECTED" ]; then
+            echo "✓ SRI hash matches CDN content"
+          else
+            echo "✗ SRI hash MISMATCH"
+            echo "  Expected: sha384-$EXPECTED"
+            echo "  Actual:   sha384-$ACTUAL"
+            exit 1
+          fi
+
+  npm-audit:
+    name: NPM Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - run: npm ci --prefer-offline --no-audit
+      - name: Run npm audit
+        run: npm audit --audit-level=high
+      - name: Check license compliance
+        run: npx --yes license-checker --onlyAllow 'MIT;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC;CC0-1.0;Unlicense;MPL-2.0;0BSD;BlueOak-1.0.0'

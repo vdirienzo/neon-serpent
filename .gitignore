@@ -74,3 +74,8 @@ playwright/.cache/
 
 # Misc
 .history/
+
+# Security audit — track reports, ignore transient logs
+audit/logs/
+audit/sbom/sbom.json
+audit/.cache/

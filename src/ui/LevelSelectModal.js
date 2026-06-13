@@ -13,29 +13,38 @@ let closeBtn = null;
 let currentSector = 1;
 
 function buildGrid() {
-  const html = LEVEL_PALETTES.map((pal, i) => {
+  while (gridEl.firstChild) gridEl.removeChild(gridEl.firstChild);
+  LEVEL_PALETTES.forEach((pal, i) => {
     const n = i + 1;
     const hex = '#' + pal.primary.toString(16).padStart(6, '0');
     const isCurrent = n === currentSector;
-    return `
-      <button class="level-cell${isCurrent ? ' current' : ''}"
-              type="button"
-              data-n="${n}"
-              style="--cell-color: ${hex};"
-              aria-label="${t('levelSelect.ariaLabel', { n, name: pal.name })}">
-        <span class="level-num">${n}</span>
-        <span class="level-name">${pal.name}</span>
-        ${isCurrent ? `<span class="level-tag" aria-hidden="true">${t('levelSelect.current')}</span>` : ''}
-      </button>
-    `;
-  }).join('');
-  gridEl.innerHTML = html;
-  for (const btn of gridEl.querySelectorAll('.level-cell')) {
+    const btn = document.createElement('button');
+    btn.className = 'level-cell' + (isCurrent ? ' current' : '');
+    btn.type = 'button';
+    btn.dataset.n = String(n);
+    btn.style.setProperty('--cell-color', hex);
+    btn.setAttribute('aria-label', t('levelSelect.ariaLabel', { n, name: pal.name }));
+    const numSpan = document.createElement('span');
+    numSpan.className = 'level-num';
+    numSpan.textContent = String(n);
+    const nameSpan = document.createElement('span');
+    nameSpan.className = 'level-name';
+    nameSpan.textContent = pal.name;
+    btn.appendChild(numSpan);
+    btn.appendChild(nameSpan);
+    if (isCurrent) {
+      const tagSpan = document.createElement('span');
+      tagSpan.className = 'level-tag';
+      tagSpan.setAttribute('aria-hidden', 'true');
+      tagSpan.textContent = t('levelSelect.current');
+      btn.appendChild(tagSpan);
+    }
     btn.addEventListener('click', () => {
-      const n = parseInt(btn.dataset.n, 10);
-      select(n);
+      const clickedN = parseInt(btn.dataset.n, 10);
+      select(clickedN);
     });
-  }
+    gridEl.appendChild(btn);
+  });
 }
 
 function open() {

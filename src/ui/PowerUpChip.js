@@ -19,14 +19,22 @@ export function show(type, durationMs) {
   const label = type === 'speed' ? t('powerUp.speedLabel') : t('powerUp.slowLabel');
   const seconds = (durationMs / 1000).toFixed(1);
   chip.className = 'powerup-chip ' + type;
-  chip.innerHTML =
-    '<span class="ic">' +
-    icon +
-    '</span><span class="lb">' +
-    label +
-    '</span><span class="tm">' +
-    t('powerUp.duration', { seconds }) +
-    '</span><div class="bar"></div>';
+  while (chip.firstChild) chip.removeChild(chip.firstChild);
+  const icSpan = document.createElement('span');
+  icSpan.className = 'ic';
+  icSpan.textContent = icon;
+  const lbSpan = document.createElement('span');
+  lbSpan.className = 'lb';
+  lbSpan.textContent = label;
+  const tmSpan = document.createElement('span');
+  tmSpan.className = 'tm';
+  tmSpan.textContent = t('powerUp.duration', { seconds });
+  const barDiv = document.createElement('div');
+  barDiv.className = 'bar';
+  chip.appendChild(icSpan);
+  chip.appendChild(lbSpan);
+  chip.appendChild(tmSpan);
+  chip.appendChild(barDiv);
   requestAnimationFrame(() => chip.classList.add('show'));
   const tm = chip.querySelector('.tm');
   const bar = chip.querySelector('.bar');
@@ -54,6 +62,6 @@ export function hide() {
   chip.classList.add('hide');
   setTimeout(() => {
     chip.classList.remove('hide');
-    chip.innerHTML = '';
+    while (chip.firstChild) chip.removeChild(chip.firstChild);
   }, 400);
 }
