@@ -91,7 +91,7 @@
     "@vitest/coverage-v8": "^4.1.8",
     "@vitest/ui": "^4.1.8",
     "esbuild": "^0.28.1",
-    "eslint": "^9.0.0",
+    "eslint": "^10.5.0",
     "eslint-config-prettier": "^9.1.0",
     "globals": "^17.6.0",
     "happy-dom": "^20.10.3",
